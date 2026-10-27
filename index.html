@@ -291,6 +291,66 @@ input[type=color]{width:30px;height:30px;padding:2px;border:1px solid var(--line
 .afmenu label{display:flex;gap:6px;align-items:center;font-size:13px;padding:2px 4px;white-space:nowrap}
 .afmenu input[type=search]{width:100%;border:1px solid var(--line);border-radius:6px;padding:4px 6px;background:var(--panel)}
 .afmenu .row{display:flex;gap:6px;justify-content:flex-end;margin-top:6px}
+/* Excel Insert: objects, charts, sparklines, checkboxes, links, comments */
+#objLayer{position:absolute;left:0;top:0;width:0;height:0;z-index:2;pointer-events:none}
+.xobj{pointer-events:auto}
+.xobj{position:absolute;background:transparent;cursor:move;touch-action:none;user-select:none}
+.xobj.chart{background:#fff;border:1px solid #d0d4da;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.xobj.sel{outline:2px solid #2f80ed;outline-offset:1px}
+.xobj .handle{position:absolute;right:-8px;bottom:-8px;width:16px;height:16px;border-radius:50%;background:#2f80ed;border:2px solid #fff;cursor:nwse-resize;z-index:3}
+.xobj canvas{width:100%!important;height:100%!important;display:block}
+.xobj img{width:100%;height:100%;display:block;pointer-events:none;object-fit:fill}
+.xobj svg{width:100%;height:100%;display:block;overflow:visible}
+.xobj .txt{width:100%;height:100%;outline:none;overflow:hidden;padding:6px 8px;word-wrap:break-word}
+.xobj.text .txt{background:#fff;border:1px solid #868e96}
+.xobj.wordart .txt{font:900 40px Impact,Arial Black,sans-serif;background:linear-gradient(180deg,#4dabf7,#1864ab);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1px #0b3b75;text-shadow:3px 3px 0 rgba(0,0,0,.12)}
+.xobj .txt[contenteditable=true]{cursor:text;user-select:text}
+.xobj.icon .ic{font-size:inherit;line-height:1;display:flex;align-items:center;justify-content:center;width:100%;height:100%}
+.xobj.slicer,.xobj.timeline{background:#fff;border:1px solid #adb5bd;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.12);overflow:hidden;display:flex;flex-direction:column;color:#212529}
+.xobj .shead{display:flex;align-items:center;gap:4px;padding:5px 8px;font:600 12px system-ui,Arial;border-bottom:1px solid #e9ecef;background:#f8f9fa}
+.xobj .shead span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.xobj .shead button{border:0;background:none;cursor:pointer;font-size:12px;padding:0 3px;color:#495057}
+.xobj .shead button.on{color:#1971c2}
+.xobj .sbody{flex:1;overflow:auto;padding:6px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:5px}
+.xobj .sbtn{flex:1 1 100%;border:1px solid #74c0fc;background:#d0ebff;color:#1864ab;border-radius:4px;padding:4px 8px;font:12px system-ui,Arial;cursor:pointer;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xobj .sbtn.off{background:#fff;border-color:#dee2e6;color:#868e96}
+.xobj.timeline .sbody{flex-wrap:nowrap;overflow-x:auto;align-items:stretch}
+.xobj .tm{flex:0 0 44px;border:1px solid #dee2e6;background:#fff;border-radius:4px;font:11px system-ui,Arial;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#495057}
+.xobj .tm.on{background:#74c0fc;border-color:#339af0;color:#fff}
+.xobj .tm small{font-size:9px;opacity:.7}
+.xobj.eq{display:flex;align-items:center;justify-content:center;background:#fff;border:1px dashed transparent}
+.xobj.eq:hover{border-color:#adb5bd}
+.xobj.sign{background:#fff;font:13px system-ui,Arial;color:#212529;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 12px}
+.xobj.sign .line{border-top:1.5px solid #212529;padding-top:3px;position:relative}
+.xobj.sign .line::before{content:'✕';position:absolute;left:0;top:-22px;font-size:16px}
+.xobj.file{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;border:1px solid #ced4da;border-radius:6px;font:11px system-ui,Arial;color:#212529;text-align:center;padding:4px}
+.xobj.file b{font-size:28px;line-height:1.1}
+.xobj model-viewer{width:100%;height:100%;background:#f1f3f5;border-radius:4px}
+#objBar{position:absolute;z-index:9;display:none;gap:2px;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.18);padding:3px;flex-wrap:wrap;max-width:420px}
+#objBar.show{display:flex}
+#objBar button,#objBar select{font-size:12px}
+#objBar input[type=color]{width:26px;height:26px}
+#grid td .spk{position:absolute;inset:2px 4px;pointer-events:none}
+#grid td.hasnote::after{content:'';position:absolute;right:0;top:0;border-style:solid;border-width:0 7px 7px 0;border-color:transparent #e03131 transparent transparent}
+#grid td .xlink{color:#1c7ed6;text-decoration:underline;cursor:pointer}
+#grid td .xchk{width:15px;height:15px;margin:0;vertical-align:middle;cursor:pointer;accent-color:#17805a}
+#grid td.chkc{text-align:center}
+.recgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.recgrid .rc{border:1px solid var(--line);border-radius:8px;padding:6px;cursor:pointer;background:#fff;color:#212529}
+.recgrid .rc:hover,.recgrid .rc.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.recgrid .rc canvas{width:100%!important;height:150px!important}
+.recgrid .rc div{font-size:12px;text-align:center;margin-top:4px}
+.ptable{font-size:12px;border-collapse:collapse;margin-top:4px}
+.ptable td,.ptable th{border:1px solid #dee2e6;padding:2px 6px}
+.iconpick{display:grid;grid-template-columns:repeat(8,36px);gap:4px}
+.iconpick button{width:36px;height:36px;font-size:20px;border:1px solid var(--line);background:var(--panel);border-radius:6px;cursor:pointer}
+.shapepick{display:grid;grid-template-columns:repeat(6,40px);gap:4px}
+.shapepick button{width:40px;height:34px;border:1px solid var(--line);background:var(--panel);border-radius:6px;cursor:pointer;padding:4px}
+.shapepick svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6}
+#printArea .sprint{font:12px Calibri,Arial,sans-serif;color:#000}
+#printArea .sprint table{border-collapse:collapse;table-layout:fixed}
+#printArea .sprint td{padding:1px 4px;white-space:nowrap;overflow:hidden;vertical-align:bottom;border:0.5px solid #e9ecef}
+#printArea .sprint .hf{text-align:center;color:#555;font-size:10px;margin:4px 0}
 #toast{position:fixed;left:50%;bottom:48px;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--panel);padding:8px 16px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:90;max-width:90vw}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media print{
@@ -516,7 +576,9 @@ input[type=color]{width:30px;height:30px;padding:2px;border:1px solid var(--line
     <label class="btn">Open .xlsx/.csv<input type="file" id="bookOpen" accept=".xlsx,.xls,.csv" hidden></label>
     <button class="btn" id="saveXlsx">Save .xlsx</button>
     <button class="btn" id="saveCsv">Save .csv</button>
+    <button class="btn" id="sheetPrint">PDF / Print</button>
   </div>
+  <div class="rtabs" id="sheetRibbonTabs"><button data-rt="xhome" class="active">Home</button><button data-rt="xinsert">Insert</button></div>
   <div class="toolbar ribbon" id="sheetToolbar">
     <div class="rpane" data-pane="xhome">
       <div class="rgroup"><div class="ritems"><div class="rcol">
@@ -606,6 +668,58 @@ input[type=color]{width:30px;height:30px;padding:2px;border:1px solid var(--line
         <button class="tb big" data-menu="xFind" title="Find &amp; Select"><i data-ic="find"></i><span>Find &amp;<br>Select ▾</span></button>
       </div><div class="rcap">Editing</div></div>
     </div>
+    <div class="rpane" data-pane="xinsert" hidden>
+      <div class="rgroup"><div class="ritems">
+        <button class="tb big" data-menu="iPivot" title="PivotTable"><i data-ic="pivot"></i><span>PivotTable ▾</span></button>
+        <button class="tb big" data-i="recPivot" title="Recommended PivotTables"><i data-ic="recpivot"></i><span>Recommended<br>PivotTables</span></button>
+        <button class="tb big" data-i="table" title="Table (Ctrl+T)"><i data-ic="fmttable"></i><span>Table</span></button>
+        <button class="tb big" data-menu="iForms" title="Forms"><i data-ic="form"></i><span>Forms ▾</span></button>
+      </div><div class="rcap">Tables</div></div>
+      <div class="rgroup"><div class="ritems"><div class="rcol">
+        <button class="tb wide" data-menu="iPictures"><i data-ic="picture"></i> Pictures ▾</button>
+        <button class="tb wide" data-menu="iShapes"><i data-ic="shapes"></i> Shapes ▾</button>
+        <button class="tb wide" data-menu="iIcons"><i data-ic="icons"></i> Icons ▾</button>
+      </div><div class="rcol">
+        <button class="tb wide" data-i="model3d" title="Insert a 3D model (.glb / .gltf)"><i data-ic="cube"></i> 3D Models</button>
+        <button class="tb wide" data-menu="iSmartArt"><i data-ic="smartart"></i> SmartArt ▾</button>
+        <button class="tb wide" data-menu="iShot"><i data-ic="screenshot"></i> Screenshot ▾</button>
+      </div></div><div class="rcap">Illustrations</div></div>
+      <div class="rgroup"><div class="ritems">
+        <button class="tb big" data-i="checkbox" title="Insert check boxes in the selected cells"><i data-ic="checkbox"></i><span>Checkbox</span></button>
+      </div><div class="rcap">Controls</div></div>
+      <div class="rgroup"><div class="ritems">
+        <button class="tb big" data-i="recChart" title="Recommended Charts"><i data-ic="recchart"></i><span>Recommended<br>Charts</span></button>
+        <div class="rcol">
+          <div class="rrow"><button class="tb" data-menu="cColumn" title="Column / Bar"><i data-ic="chcol"></i>▾</button><button class="tb" data-menu="cHier" title="Hierarchy"><i data-ic="chtree"></i>▾</button><button class="tb" data-menu="cWater" title="Waterfall, Funnel, Stock"><i data-ic="chwater"></i>▾</button></div>
+          <div class="rrow"><button class="tb" data-menu="cLine" title="Line / Area"><i data-ic="chline"></i>▾</button><button class="tb" data-menu="cStat" title="Statistic"><i data-ic="chhist"></i>▾</button><button class="tb" data-menu="cCombo" title="Combo"><i data-ic="chcombo"></i>▾</button></div>
+          <div class="rrow"><button class="tb" data-menu="cPie" title="Pie / Doughnut"><i data-ic="chpie"></i>▾</button><button class="tb" data-menu="cScatter" title="Scatter / Bubble"><i data-ic="chscatter"></i>▾</button><button class="tb" data-menu="cRadar" title="Radar / Polar"><i data-ic="chradar"></i>▾</button></div>
+        </div>
+        <button class="tb big" data-i="map" title="Filled map by country"><i data-ic="globe"></i><span>Maps</span></button>
+        <button class="tb big" data-i="pivotChart" title="PivotChart"><i data-ic="pivotchart"></i><span>PivotChart</span></button>
+      </div><div class="rcap">Charts</div></div>
+      <div class="rgroup"><div class="ritems">
+        <button class="tb big" data-i="spark:line"><i data-ic="spline"></i><span>Line</span></button>
+        <button class="tb big" data-i="spark:column"><i data-ic="spcol"></i><span>Column</span></button>
+        <button class="tb big" data-i="spark:winloss"><i data-ic="spwin"></i><span>Win/<br>Loss</span></button>
+      </div><div class="rcap">Sparklines</div></div>
+      <div class="rgroup"><div class="ritems">
+        <button class="tb big" data-i="slicer"><i data-ic="slicer"></i><span>Slicer</span></button>
+        <button class="tb big" data-i="timeline"><i data-ic="timeline"></i><span>Timeline</span></button>
+      </div><div class="rcap">Filters</div></div>
+      <div class="rgroup"><div class="ritems">
+        <button class="tb big" data-menu="iLink" title="Link (Ctrl+K)"><i data-ic="link"></i><span>Link ▾</span></button>
+      </div><div class="rcap">Links</div></div>
+      <div class="rgroup"><div class="ritems">
+        <button class="tb big" data-menu="iComment" title="Comment"><i data-ic="note"></i><span>Comment ▾</span></button>
+      </div><div class="rcap">Comments</div></div>
+      <div class="rgroup"><div class="ritems">
+        <button class="tb big" data-menu="iText" title="Text"><i data-ic="addtext"></i><span>Text ▾</span></button>
+      </div><div class="rcap">Text</div></div>
+      <div class="rgroup"><div class="ritems"><div class="rcol">
+        <button class="tb wide" data-menu="iEq"><b>π</b> Equation ▾</button>
+        <button class="tb wide" data-menu="iSym"><span class="omega">Ω</span> Symbol ▾</button>
+      </div></div><div class="rcap">Symbols</div></div>
+    </div>
   </div>
   <div id="xFindBar" hidden>
     <input id="xFindIn" placeholder="Find…" autocomplete="off"><span id="xFindCount" class="clabel"></span>
@@ -619,6 +733,7 @@ input[type=color]{width:30px;height:30px;padding:2px;border:1px solid var(--line
   <div class="fbar"><span id="cellName">A1</span><input id="fbar" placeholder="Value or =formula" autocomplete="off" spellcheck="false"></div>
   <div id="gridWrap" tabindex="0">
     <table id="grid"></table>
+    <div id="objLayer"></div>
     <input id="cellEditor" hidden autocomplete="off" spellcheck="false">
   </div>
   <div class="tabbar">
@@ -899,11 +1014,11 @@ async function nodeShims(){
   if(!window.Buffer){ const m = await import(BUFFER_ESM); window.Buffer = m.Buffer || (m.default && m.default.Buffer); }
 }
 function need(name){
-  const [url, g] = LIBS[name];
-  if(window[g]) return Promise.resolve(window[g]);
+  const [url, g] = LIBS[name]; const have=()=> typeof g==='function' ? g() : window[g];
+  if(have()) return Promise.resolve(have());
   if(!libLoading[name]) libLoading[name] = new Promise((res, rej)=>{
     const s=document.createElement('script'); s.src=url;
-    s.onload=()=> window[g] ? res(window[g]) : rej(new Error(name+' missing'));
+    s.onload=()=> have() ? res(have()) : rej(new Error(name+' missing'));
     s.onerror=()=>{ delete libLoading[name]; rej(new Error('Could not load '+name+' – check your internet')); };
     document.head.appendChild(s);
   });
@@ -1306,6 +1421,27 @@ const ICONS={
   cellfmt:'<path d="M2 2.5h12v11H2zM2 6.2h12M6 2.5v11"/><path d="M9 8.5h3v3H9z" fill="currentColor" opacity=".35"/>',
   filldown:'<path d="M3 2.5h10v4H3zM8 7v6.5M5.5 11 8 13.5 10.5 11"/>',
   sortfilter:'<text x="0.5" y="7" font-size="6" stroke="none" fill="currentColor" font-weight="700">A</text><text x="0.5" y="14.5" font-size="6" stroke="none" fill="currentColor" font-weight="700">Z</text><path d="M6 3v10M4.5 11.5 6 13l1.5-1.5M8.5 3h6l-2.4 3.6v4.4l-1.2.8V6.6z"/>',
+  pivot:'<path d="M2 2.5h12v11H2zM2 5.5h12M5.5 2.5v11"/><path d="M8 8h4M10 10l2-2-2-2" />',
+  recpivot:'<path d="M2 2.5h9v9H2zM2 5.5h9M5 2.5v9"/><path d="M12.5 8.5a1.6 1.6 0 1 1 1.6 1.6v1.2M14.1 13.3v.4"/>',
+  icons:'<circle cx="5" cy="5" r="2.5"/><path d="M9 2.5h5v5H9zM2.5 13.5l2.5-4.5 2.5 4.5zM9.5 11a2.2 2.2 0 1 0 4.4 0 2.2 2.2 0 0 0-4.4 0"/>',
+  smartart:'<path d="M2 3h4v3H2zM10 3h4v3h-4zM6 10h4v3H6zM4 6v2h8V6M8 8v2"/>',
+  screenshot:'<path d="M2 4h3l1-1.5h4L11 4h3v8.5H2z"/><circle cx="8" cy="8.2" r="2.3"/>',
+  recchart:'<path d="M2 14h12M4 12V8M7 12V5M10 12V9"/><path d="M12.5 3.5l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6z"/>',
+  chcol:'<path d="M2 14h12M4 12V7M7.5 12V3.5M11 12V8.5"/>',
+  chline:'<path d="M2 14h12M2.5 11l3.5-4 3 2.5 4.5-6"/>',
+  chpie:'<path d="M8 2.5a5.5 5.5 0 1 0 5.5 5.5H8z"/><path d="M10 1v5h5a5 5 0 0 0-5-5z"/>',
+  chtree:'<path d="M2 2.5h12v11H2zM8 2.5v11M8 7.5h6M11 7.5v6"/>',
+  chhist:'<path d="M2 14h12M3 13.5V9h2.5V5H8v3h2.5v2.5H13v3"/>',
+  chscatter:'<path d="M2 2v12h12"/><path d="M5 10h.01M7 7h.01M9 9h.01M11 4.5h.01M12.5 6h.01" stroke-width="2.4"/>',
+  chwater:'<path d="M2 14h12M3.5 12V6M6.5 6V4M9.5 4v3M12.5 7v5"/>',
+  chcombo:'<path d="M2 14h12M4 12V8M7.5 12V6M11 12V9"/><path d="M2.5 9l4-4.5 3.5 2 4-3"/>',
+  chradar:'<path d="M8 1.5l6 4.5-2.3 7.5H4.3L2 6z"/><path d="M8 4.5l3 2.5-1.2 3.8H6.2L5 7z"/>',
+  pivotchart:'<path d="M2 2.5h7v6H2zM2 4.8h7M4.5 2.5v6"/><path d="M10 14V10.5M12 14V8M14 14V11.5M9 14h6"/>',
+  spline:'<path d="M2 2.5h12v11H2z" opacity=".4"/><path d="M3.5 11l2.5-3 2 1.5 4-5"/>',
+  spcol:'<path d="M2 2.5h12v11H2z" opacity=".4"/><path d="M4.5 12V9M7 12V6M9.5 12V8M12 12V4.5" stroke-width="1.8"/>',
+  spwin:'<path d="M2 2.5h12v11H2z" opacity=".4"/><path d="M4.5 8V5M7 8V5M9.5 8v3M12 8V5" stroke-width="1.8"/>',
+  slicer:'<path d="M2.5 2h11v12h-11zM2.5 5h11"/><path d="M4.5 7h7v1.8h-7zM4.5 10.2h7V12h-7z" fill="currentColor" opacity=".35"/>',
+  timeline:'<path d="M2 4h12v8H2zM2 6.5h12"/><path d="M4 8v2.5M6.5 8v2.5M9 8v2.5M11.5 8v2.5"/>',
   note:'<path d="M2.5 2.5h11v8l-3 3h-8z"/><path d="M10.5 13.5v-3h3M5 6h6M5 8.5h4"/>',
 };
 function injectIcons(root=document){ root.querySelectorAll('i[data-ic]').forEach(i=>{ if(!i.firstChild) i.innerHTML=`<svg viewBox="0 0 16 16">${ICONS[i.dataset.ic]||''}</svg>`; }); }
@@ -2097,6 +2233,7 @@ function filteredRows(s){
     for(const [c,f] of Object.entries(a.f)){
       const t=cellText(s, r, +c).trim();
       if((f.hide && f.hide.includes(t)) || (f.text && !t.toLowerCase().includes(f.text.toLowerCase()))){ hide.add(r); break; }
+      if(f.range){ const n=val(r,+c); if(typeof n!=='number' || n<f.range[0] || n>f.range[1]){ hide.add(r); break; } }
     }
   }
   return hide;
@@ -2149,6 +2286,8 @@ function cellInner(v, st, d){
   const f=fmtOf(st);
   if(typeof v==='number' && f.nf==='accounting'){ const p=formatNum(v, st, true); inner=`<span class="acc"><span>${esc(p.sym)}</span><span>${esc(p.num)}</span></span>`; }
   else { text=display(v, (st.nf || st.fmt) ? (st.nf ? st : st.fmt) : null); inner=esc(text); }
+  if(st.chk){ const on=v===true || /^true$/i.test(String(v)); inner=`<input type="checkbox" class="xchk"${on?' checked':''} tabindex="-1">`; }
+  if(st.link) inner=`<span class="xlink" title="${esc(st.link)} – Ctrl+click to open">${inner}</span>`;
   if(d && d.icon) inner=`<span style="color:${d.iconColor||'inherit'};margin-right:4px;font-size:.85em">${d.icon}</span>`+inner;
   let cvs='';
   if(st.rot==='v') cvs='writing-mode:vertical-rl;text-orientation:upright;margin:0 auto;';
@@ -2194,10 +2333,10 @@ function renderGrid(){
       if(!x && !d.bg && !d.bar && !isAf && !m){ h+=`<td data-r="${r}" data-c="${c}"></td>`; continue; }
       const st=(x && x.s) || {}, v=x ? val(r,c) : null;
       let cls=typeof v==='number'?'n':isErr(v)?'e':typeof v==='boolean'?'b':'';
-      if(st.wrap) cls+=' wrapc'; if(st.va && st.va!=='bottom') cls+=' va-'+st.va; if(marked.has(k)) cls+=' mark';
+      if(st.wrap) cls+=' wrapc'; if(st.va && st.va!=='bottom') cls+=' va-'+st.va; if(marked.has(k)) cls+=' mark'; if(st.note) cls+=' hasnote'; if(st.chk) cls+=' chkc';
       const css=cellStyleCSS(v, st, d);
       const afb=isAf ? `<button class="afb${a.f && a.f[c] ? ' on' : ''}" data-af="${c}" title="Filter">${a.f && a.f[c] ? '⧩' : '▾'}</button>` : '';
-      h+=`<td data-r="${r}" data-c="${c}"${span}${cls.trim()?` class="${cls.trim()}"`:''}${css?` style="${css}"`:''}>${x ? cellInner(v, st, d) : ''}${afb}</td>`;
+      h+=`<td data-r="${r}" data-c="${c}"${span}${st.note?` title="${esc(st.note)}"`:''}${cls.trim()?` class="${cls.trim()}"`:''}${css?` style="${css}"`:''}>${x ? cellInner(v, st, d) : ''}${afb}</td>`;
     }
     h+='</tr>';
   }
@@ -2205,6 +2344,7 @@ function renderGrid(){
   tdMap=new Map();
   grid.querySelectorAll('td[data-c]').forEach(td=>tdMap.set(K(+td.dataset.r, +td.dataset.c), td));
   for(const [k,m] of anchors){ const td=tdMap.get(k); if(td) for(let r=m[0];r<=m[2];r++) for(let c=m[1];c<=m[3];c++) tdMap.set(K(r,c), td); }
+  try{ renderSparks(s); renderObjects(); }catch(e){ if(!(e instanceof ReferenceError)) console.error(e); }
   $('#sheetTabs').innerHTML=book.sheets.map((x,i)=>`<button class="stab${i===book.active?' active':''}${x.tabColor?' tc':''}" data-i="${i}"${x.tabColor?` style="--tabc:${x.tabColor}"`:''}>${esc(x.name)}</button>`).join('');
   selChanged(false);
 }
@@ -2305,6 +2445,8 @@ grid.addEventListener('pointerdown', e=>{
   const td=e.target.closest('td'); if(!td) return;
   const p=cellFromTd(td);
   commitEdit(0,0,false);
+  if(e.target.closest('.xchk')){ e.preventDefault(); toggleChk(p.r, p.c); return; }
+  if((e.ctrlKey||e.metaKey) && stOf(p.r,p.c).link){ e.preventDefault(); followLink(stOf(p.r,p.c).link); return; }
   if(e.shiftKey) extendTo(p); else { act=p; const m=mergeOf(sh(),p.r,p.c); ext= m ? {r:m[2], c:m[3]} : {...p}; }
   dragging=true; selChanged(false); wrap.focus({preventScroll:true});
   e.preventDefault();
@@ -2353,6 +2495,8 @@ wrap.addEventListener('keydown', e=>{
     const l=k.toLowerCase();
     const map={z:e.shiftKey?'redo':'undo', y:'redo', b:'bold', i:'italic', u:'underline', d:'fillDown', r:'fillRight', f:'find', h:'replace', g:'goto', '5':'strike'};
     if(e.shiftKey && l==='l'){ e.preventDefault(); xAct('filter'); return; }
+    if(l==='k'){ e.preventDefault(); linkDialog(); return; }
+    if(l==='t' || l==='l'){ e.preventDefault(); showMenu('xTable', [...$$('#sheetToolbar [data-menu="xTable"], #sheetToolbar [data-i="table"]')].find(b=>b.offsetParent)); return; }
     if(l==='a'){ e.preventDefault(); act={r:0,c:0}; ext={r:sh().rows-1,c:sh().cols-1}; selChanged(false); return; }
     if(map[l]){ e.preventDefault(); xAct(map[l]); }
     return;
@@ -2360,6 +2504,7 @@ wrap.addEventListener('keydown', e=>{
   if(k==='Escape' && (marked.size || xPainter)){ marked=new Set(); stopPainter(); renderGrid(); return; }
   const mv={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]}[k];
   if(mv){ e.preventDefault(); if(e.shiftKey){ extendTo(clampP({r:ext.r+mv[0], c:ext.c+mv[1]})); selChanged(); } else move(mv[0],mv[1]); return; }
+  if(k===' ' && stOf(act.r,act.c).chk && !e.shiftKey){ e.preventDefault(); forCells((r,c)=>{ if(stOf(r,c).chk) toggleChk(r,c,true); }); afterChange(); return; }
   if(k==='Enter' || k==='F2'){ e.preventDefault(); startEdit(); return; }
   if(k==='Tab'){ e.preventDefault(); move(0, e.shiftKey?-1:1); return; }
   if(k==='Delete' || k==='Backspace'){ e.preventDefault(); clearRange('contents'); return; }
@@ -2875,6 +3020,8 @@ $('#bookNew').onclick=()=>{ const n=prompt('Workbook name', 'Untitled'); if(n===
 $('#bookRename').onclick=()=>{ const n=prompt('Rename workbook', books.cur().name); if(n && n.trim()){ books.rename(n.trim()); books.fill($('#bookList')); updateStatus(); } };
 $('#bookDelete').onclick=()=>{ if(!confirm(`Delete "${books.cur().name}"? This cannot be undone.`)) return; clearTimeout(bookTimer); bookTimer=null; books.remove(); loadBook(); };
 
+function toggleChk(r, c, batch){ if(!batch) pushUndo(); const x=sh().cells[K(r,c)]; if(!x) return; const on=/^true$/i.test(String(val(r,c))); x.v= on ? 'FALSE' : 'TRUE'; if(!batch) afterChange(); }
+
 /* ================================================================
    SHEETS – .xlsx / .csv import & export with formatting
    ================================================================ */
@@ -3060,6 +3207,645 @@ $('#saveCsv').onclick=()=>{
     lines.push(row.join(',')); }
   download(new Blob(['﻿'+lines.join('\r\n')], {type:'text/csv;charset=utf-8'}), safeName(books.cur().name)+(book.sheets.length>1?'_'+safeName(s.name):'')+'.csv');
 };
+
+/* ================================================================
+   SHEETS – Insert tab: objects, charts, pivots, sparklines, slicers…
+   ================================================================ */
+Object.assign(LIBS, {
+  chart:   ['https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js', 'Chart'],
+  treemap: ['https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.3.0/dist/chartjs-chart-treemap.min.js', 'chartjs-chart-treemap'],
+  boxplot: ['https://cdn.jsdelivr.net/npm/@sgratzl/chartjs-chart-boxplot@4.4.4/build/index.umd.min.js', 'ChartBoxPlot'],
+  geo:     ['https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4.3.3/build/index.umd.min.js', 'ChartGeo'],
+  katex:   ['https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js', 'katex'],
+  mv:      ['https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer-umd.min.js', ()=>!!customElements.get('model-viewer')],
+});
+const WORLD_ATLAS='https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json';
+const KATEX_CSS='https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css';
+const PALETTE=['#4472c4','#ed7d31','#a5a5a5','#ffc000','#5b9bd5','#70ad47','#264478','#9e480e','#636363','#997300','#255e91','#43682b'];
+const PALETTES={office:PALETTE, colorful:['#e64980','#7950f2','#15aabf','#82c91e','#fd7e14','#fab005','#4c6ef5','#12b886'], blue:['#1864ab','#1c7ed6','#4dabf7','#74c0fc','#a5d8ff','#d0ebff'], green:['#2b8a3e','#37b24d','#69db7c','#8ce99a','#b2f2bb','#d3f9d8'], mono:['#212529','#495057','#868e96','#adb5bd','#ced4da','#e9ecef'], warm:['#c92a2a','#e8590c','#f59f00','#fab005','#ffd43b','#ffe066']};
+let objSel=null, objEdit=null; const chartInst=new Map();
+const objLayer=$('#objLayer');
+const objBar=document.createElement('div'); objBar.id='objBar'; wrap.appendChild(objBar);
+
+/* ---------- ribbon tabs ---------- */
+$$('#sheetRibbonTabs button').forEach(b=>b.onclick=()=>{
+  $$('#sheetRibbonTabs button').forEach(x=>x.classList.toggle('active', x===b));
+  $$('#sheetToolbar .rpane').forEach(p=>p.hidden = p.dataset.pane!==b.dataset.rt);
+});
+
+/* ---------- geometry ---------- */
+function cellRect(r,c){
+  const td=tdAt(r,c); if(!td) return {x:46, y:26, w:100, h:26};
+  const g=grid.getBoundingClientRect(), t=td.getBoundingClientRect(); return {x:t.left-g.left, y:t.top-g.top, w:t.width, h:t.height};
+}
+function placeNear(w,h){ const R=norm(); const p=cellRect(R.r1, Math.min(R.c2+1, sh().cols-1)); return {x:Math.round(p.x+8), y:Math.round(p.y), w, h}; }
+function rangeStr(R){ return `${colName(R.c1)}${R.r1+1}:${colName(R.c2)}${R.r2+1}`; }
+function parseRange(t){ const m=String(t||'').trim().toUpperCase().replace(/\$/g,'').match(/^([A-Z]{1,3})(\d+)(?::([A-Z]{1,3})(\d+))?$/); if(!m) return null;
+  const a={r:+m[2]-1, c:colIndex(m[1])}, b= m[3] ? {r:+m[4]-1, c:colIndex(m[3])} : a; return {r1:Math.min(a.r,b.r), c1:Math.min(a.c,b.c), r2:Math.max(a.r,b.r), c2:Math.max(a.c,b.c)}; }
+function dataRegion(){ const R=norm(); if(R.r1!==R.r2 || R.c1!==R.c2) return R; return currentRegion(); }
+
+/* ---------- object layer ---------- */
+function addObj(o){ const s=sh(); pushUndo(); s.objects=s.objects||[];
+  const hit=()=>s.objects.some(x=>o.x<x.x+x.w && o.x+o.w>x.x && o.y<x.y+x.h && o.y+o.h>x.y); let n=0; while(hit() && n++<40){ o.y+=24; o.x+=24; } o.id=o.id||uid(); s.objects.push(o); objSel=o.id; afterChange(); return o; }
+function getObj(id){ return (sh().objects||[]).find(o=>o.id===id); }
+function renderObjects(){
+  const s=sh(); chartInst.forEach(c=>{ try{ c.destroy(); }catch(e){} }); chartInst.clear();
+  objLayer.style.width=grid.offsetWidth+'px'; objLayer.style.height=grid.offsetHeight+'px';
+  const list=s.objects||[];
+  objLayer.innerHTML=list.map(o=>`<div class="xobj ${o.type}${o.id===objSel?' sel':''}" data-oid="${o.id}" style="left:${o.x}px;top:${o.y}px;width:${o.w}px;height:${o.h}px">${objInner(o)}${o.id===objSel?'<div class="handle"></div>':''}</div>`).join('');
+  const needChart=list.some(o=>o.type==='chart');
+  if(needChart){ if(!window.Chart){ need('chart').then(()=>renderObjects()).catch(e=>toast(e.message)); } else list.filter(o=>o.type==='chart').forEach(o=>drawChart(o)); }
+  if(list.some(o=>o.type==='eq') && !window.katex) loadKatex().then(()=>renderObjects());
+  if(list.some(o=>o.type==='model3d') && !customElements.get('model-viewer')) need('mv').then(()=>{}).catch(()=>{});
+  showObjBar();
+}
+function objInner(o){
+  switch(o.type){
+    case 'chart': return '<canvas></canvas>';
+    case 'image': return `<img src="${o.src}" alt="">`;
+    case 'shape': return shapeSVG(o);
+    case 'text': case 'wordart': return `<div class="txt" style="${o.type==='text' ? `font-size:${o.size||14}px;color:${o.color||'#212529'};${o.bold?'font-weight:700;':''}text-align:${o.align||'left'};` : `font-size:${o.size||40}px;`}">${o.html||''}</div>`;
+    case 'icon': return `<div class="ic" style="font-size:${Math.min(o.w,o.h)*0.85}px">${o.icon}</div>`;
+    case 'smartart': return smartArtSVG(o);
+    case 'slicer': return slicerHTML(o);
+    case 'timeline': return timelineHTML(o);
+    case 'eq': return window.katex ? (()=>{ try{ return katex.renderToString(o.tex, {throwOnError:false, displayMode:true}); }catch(e){ return esc(o.tex); } })() : `<span>${esc(o.tex)}</span>`;
+    case 'sign': return `<div style="flex:1"></div><div class="line"><b>${esc(o.name||'')}</b><br><span style="color:#495057">${esc(o.title||'')}</span>${o.email?`<br><span style="color:#868e96">${esc(o.email)}</span>`:''}</div>`;
+    case 'file': return `<b>${/^audio|^video/.test(o.mime)?'🎬':/pdf/.test(o.mime)?'📕':/word|docx/.test(o.mime+o.name)?'📘':/sheet|xlsx|csv/.test(o.mime+o.name)?'📗':'📄'}</b><span style="overflow:hidden;text-overflow:ellipsis;max-width:100%;white-space:nowrap">${esc(o.name)}</span>`;
+    case 'model3d': return `<model-viewer src="${o.src}" camera-controls ${o.spin?'auto-rotate':''} style="pointer-events:${objEdit===o.id?'auto':'none'}" alt="3D model"></model-viewer>`;
+  }
+  return '';
+}
+
+/* ---------- shapes ---------- */
+const SHAPES={
+  rect:'M2 2H98V98H2Z', round:'M14 2H86Q98 2 98 14V86Q98 98 86 98H14Q2 98 2 86V14Q2 2 14 2Z', ellipse:'M50 2A48 48 0 1 1 49.9 2Z',
+  triangle:'M50 2L98 98H2Z', rtri:'M2 2L98 98H2Z', diamond:'M50 2L98 50L50 98L2 50Z', pentagon:'M50 2L98 38L80 98H20L2 38Z',
+  hexagon:'M25 2H75L98 50L75 98H25L2 50Z', octagon:'M30 2H70L98 30V70L70 98H30L2 70V30Z', star:'M50 2L62 38H98L69 60L80 96L50 74L20 96L31 60L2 38H38Z',
+  arrowR:'M2 30H60V8L98 50L60 92V70H2Z', arrowL:'M98 30H40V8L2 50L40 92V70H98Z', arrowU:'M30 98V40H8L50 2L92 40H70V98Z', arrowD:'M30 2V60H8L50 98L92 60H70V2Z',
+  chevron:'M2 2H70L98 50L70 98H2L30 50Z', plus:'M35 2H65V35H98V65H65V98H35V65H2V35H35Z', heart:'M50 92C20 70 2 52 2 30C2 14 14 4 28 4C38 4 46 10 50 18C54 10 62 4 72 4C86 4 98 14 98 30C98 52 80 70 50 92Z',
+  callout:'M4 4H96V70H40L20 96L24 70H4Z', cloud:'M25 85C10 85 2 74 4 62C4 50 14 44 22 46C22 28 36 16 52 20C62 6 86 10 88 30C98 32 100 46 96 56C100 72 88 86 74 85Z',
+  bolt:'M58 2L18 56H46L36 98L82 40H54Z', line:'M2 98L98 2', arrowLine:'M2 98L98 2',
+};
+function shapeSVG(o){
+  const p=SHAPES[o.shape]||SHAPES.rect, isLine=o.shape==='line'||o.shape==='arrowLine';
+  const sw=o.lw||2;
+  return `<svg viewBox="0 0 100 100" preserveAspectRatio="none">${o.shape==='arrowLine'?`<defs><marker id="ah${o.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="${o.line||'#2f5597'}"/></marker></defs>`:''}
+    <path d="${p}" fill="${isLine?'none':(o.fill||'#4472c4')}" stroke="${o.line||'#2f5597'}" stroke-width="${sw}" vector-effect="non-scaling-stroke"${o.shape==='arrowLine'?` marker-end="url(#ah${o.id})"`:''}/>
+    ${o.text?`<foreignObject x="0" y="0" width="100" height="100"><div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font:${o.tsize||13}px system-ui,Arial;color:${o.tcolor||'#fff'};padding:4px;box-sizing:border-box;transform:scale(${100/o.w},${100/o.h});transform-origin:0 0;width:${o.w}px;height:${o.h}px">${esc(o.text)}</div></foreignObject>`:''}</svg>`;
+}
+
+/* ---------- SmartArt ---------- */
+function smartArtSVG(o){
+  const items=(o.items||[]).filter(Boolean), n=Math.max(1,items.length), col=i=>(PALETTES[o.pal||'office']||PALETTE)[i%6], W=o.w, H=o.h;
+  const T=(x,y,w,h,t,c,shape)=>`<g>${shape==='chev' ? `<path d="M${x} ${y}h${w*0.8}l${w*0.2} ${h/2}l${-w*0.2} ${h/2}h${-w*0.8}l${w*0.2} ${-h/2}z" fill="${c}"/>` : shape==='circle' ? `<circle cx="${x+w/2}" cy="${y+h/2}" r="${Math.min(w,h)/2}" fill="${c}"/>` : `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(10,h/5)}" fill="${c}"/>`}
+    <foreignObject x="${x}" y="${y}" width="${w}" height="${h}"><div xmlns="http://www.w3.org/1999/xhtml" style="width:${w}px;height:${h}px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font:600 ${Math.max(10,Math.min(16,h/3.2))}px system-ui,Arial;padding:4px 8px;box-sizing:border-box;overflow:hidden">${esc(t)}</div></foreignObject></g>`;
+  let g='';
+  if(o.layout==='list'){ const h=(H-(n-1)*6)/n; items.forEach((t,i)=>g+=T(0, i*(h+6), W, h, t, col(i))); }
+  else if(o.layout==='process'){ const w=(W-(n-1)*4)/n; items.forEach((t,i)=>g+=T(i*(w+4), H*0.25, w, H*0.5, t, col(i), 'chev')); }
+  else if(o.layout==='cycle'){ const r=Math.min(W,H)/2-Math.min(W,H)*0.16, cx=W/2, cy=H/2, s=Math.min(W,H)*0.3;
+    g+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#adb5bd" stroke-width="2" stroke-dasharray="6 5"/>`;
+    items.forEach((t,i)=>{ const a=-Math.PI/2+i*2*Math.PI/n; g+=T(cx+r*Math.cos(a)-s/2, cy+r*Math.sin(a)-s/2, s, s, t, col(i), 'circle'); }); }
+  else if(o.layout==='pyramid'){ items.forEach((t,i)=>{ const h=H/n, y=i*h, w0=W*(i+1)/n; g+=`<path d="M${W/2-w0/2+ (W/n)/2 - (W/n)/2} ${y+h}L${W/2-(W*i/n)/2} ${y}H${W/2+(W*i/n)/2}L${W/2+w0/2} ${y+h}Z" fill="${col(i)}" stroke="#fff" stroke-width="2"/>`;
+    g+=`<foreignObject x="${W/2-w0/2}" y="${y}" width="${w0}" height="${h}"><div xmlns="http://www.w3.org/1999/xhtml" style="width:${w0}px;height:${h}px;display:flex;align-items:center;justify-content:center;color:#fff;font:600 13px system-ui,Arial;text-align:center">${esc(t)}</div></foreignObject>`; }); }
+  else if(o.layout==='hierarchy'){ const top=items[0]||'', rest=items.slice(1), bw=Math.min(160, W/Math.max(1,rest.length)-10), bh=Math.min(50,H/3);
+    g+=T(W/2-bw/2, 4, bw, bh, top, col(0));
+    rest.forEach((t,i)=>{ const x=(i+0.5)*W/rest.length-bw/2, y=H-bh-4; g+=`<path d="M${W/2} ${bh+4}V${(bh+4+y)/2}H${x+bw/2}V${y}" fill="none" stroke="#868e96" stroke-width="1.5"/>`+T(x, y, bw, bh, t, col(i+1)); }); }
+  else if(o.layout==='matrix'){ const w=W/2-3, h=H/2-3; items.slice(0,4).forEach((t,i)=>g+=T((i%2)*(w+6), Math.floor(i/2)*(h+6), w, h, t, col(i))); }
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${g}</svg>`;
+}
+
+/* ---------- slicer & timeline ---------- */
+function afValues(s, c){ const a=afRange(s); if(!a) return []; recalcSheet(s); const set=new Set(); for(let r=a.r1+1;r<=a.r2;r++) set.add(cellText(s,r,c).trim()); return [...set].sort((x,y)=>x===''?1:y===''?-1:x.localeCompare(y,undefined,{numeric:true})); }
+function slicerHTML(o){
+  const s=sh(), vals=afValues(s, o.col), f=(s.af && s.af.f && s.af.f[o.col])||{}, hide=new Set(f.hide||[]);
+  return `<div class="shead"><span>${esc(o.title)}</span><button data-sl="multi" class="${o.multi?'on':''}" title="Multi-select">☷</button><button data-sl="clear" title="Clear filter">✕</button></div>
+    <div class="sbody">${vals.map(v=>`<button class="sbtn${hide.has(v)?' off':''}" data-sv="${esc(v)}">${v===''?'(blank)':esc(v)}</button>`).join('')}</div>`;
+}
+function monthsBetween(a,b){ const out=[]; const d0=new Date(Date.UTC(1899,11,30)+a*864e5), d1=new Date(Date.UTC(1899,11,30)+b*864e5); let y=d0.getUTCFullYear(), m=d0.getUTCMonth();
+  while(y<d1.getUTCFullYear() || (y===d1.getUTCFullYear() && m<=d1.getUTCMonth())){ out.push({y, m, from:dateSerial(y,m+1,1), to:dateSerial(m===11?y+1:y, m===11?1:m+2, 1)-1e-6}); m++; if(m>11){ m=0; y++; } if(out.length>240) break; } return out; }
+function timelineHTML(o){
+  const s=sh(), a=afRange(s); if(!a) return '<div class="shead"><span>No data</span></div>'; recalcSheet(s);
+  const nums=[]; for(let r=a.r1+1;r<=a.r2;r++){ const v=val(r,o.col); if(typeof v==='number') nums.push(v); }
+  if(!nums.length) return `<div class="shead"><span>${esc(o.title)}</span></div><div class="sbody">No dates found</div>`;
+  const f=(s.af.f||{})[o.col]||{}, rg=f.range;
+  const ms=monthsBetween(Math.min(...nums), Math.max(...nums));
+  return `<div class="shead"><span>${esc(o.title)}${rg?' – filtered':''}</span><button data-sl="clear" title="Clear filter">✕</button></div>
+    <div class="sbody">${ms.map((m,i)=>`<button class="tm${rg && m.from<=rg[1] && m.to>=rg[0]?' on':''}" data-tm="${i}" data-from="${m.from}" data-to="${m.to}"><small>${m.y}</small>${MONTHS[m.m].slice(0,3).toUpperCase()}</button>`).join('')}</div>`;
+}
+
+/* ---------- object interaction ---------- */
+objLayer.addEventListener('pointerdown', e=>{
+  const el=e.target.closest('.xobj'); if(!el) return;
+  const o=getObj(el.dataset.oid); if(!o) return;
+  if(objEdit===o.id) return;
+  if(e.target.closest('[data-sl],[data-sv],[data-tm]')){ e.stopPropagation(); return; }
+  e.preventDefault(); e.stopPropagation(); commitEdit(0,0,false);
+  const handle=e.target.closest('.handle'), was=objSel===o.id;
+  if(!was){ objSel=o.id; objEdit=null; renderObjects(); }
+  const st={x:o.x, y:o.y, w:o.w, h:o.h, px:e.clientX, py:e.clientY}; let moved=false; const snap=JSON.stringify(book); const node=objLayer.querySelector(`[data-oid="${o.id}"]`);
+  const mv=m=>{ const dx=m.clientX-st.px, dy=m.clientY-st.py; if(!moved && Math.hypot(dx,dy)<3) return; if(!moved){ moved=true; undoStack.push(snap); redoStack=[]; objBar.classList.remove('show'); }
+    if(handle){ o.w=Math.max(30, Math.round(st.w+dx)); o.h= (o.type==='image' && !m.shiftKey) ? Math.round(o.w*st.h/st.w) : Math.max(20, Math.round(st.h+dy)); node.style.width=o.w+'px'; node.style.height=o.h+'px'; const ch=chartInst.get(o.id); if(ch) ch.resize(); }
+    else { o.x=Math.max(0, Math.round(st.x+dx)); o.y=Math.max(0, Math.round(st.y+dy)); node.style.left=o.x+'px'; node.style.top=o.y+'px'; } };
+  const up=()=>{ removeEventListener('pointermove',mv); removeEventListener('pointerup',up); if(moved){ saveBook(); if(handle || ['smartart','shape','icon','eq'].includes(o.type)) renderObjects(); else showObjBar(); } };
+  addEventListener('pointermove',mv); addEventListener('pointerup',up);
+  wrap.focus({preventScroll:true});
+});
+objLayer.addEventListener('click', e=>{
+  const el=e.target.closest('.xobj'); if(!el) return; const o=getObj(el.dataset.oid); if(!o) return; const s=sh();
+  const sl=e.target.closest('[data-sl]'), sv=e.target.closest('[data-sv]'), tm=e.target.closest('[data-tm]');
+  if(!s.af && (sl||sv||tm)) return;
+  if(sl && sl.dataset.sl==='multi'){ o.multi=!o.multi; saveBook(); renderObjects(); return; }
+  if(sl && sl.dataset.sl==='clear'){ pushUndo(); s.af.f=s.af.f||{}; delete s.af.f[o.col]; return afterChange(); }
+  if(sv){ const v=sv.dataset.sv, all=afValues(s,o.col); pushUndo(); s.af.f=s.af.f||{}; const f=s.af.f[o.col]||{hide:[]}; let hide=new Set(f.hide||[]);
+    if(o.multi){ if(hide.has(v)) hide.delete(v); else hide.add(v); }
+    else { const only=all.filter(x=>!hide.has(x)); hide = (only.length===1 && only[0]===v) ? new Set() : new Set(all.filter(x=>x!==v)); }
+    if(hide.size) s.af.f[o.col]={...f, hide:[...hide]}; else { delete s.af.f[o.col]; } return afterChange(); }
+  if(tm){ pushUndo(); s.af.f=s.af.f||{}; const from=+tm.dataset.from, to=+tm.dataset.to, cur=(s.af.f[o.col]||{}).range;
+    s.af.f[o.col]={range: e.shiftKey && cur ? [Math.min(cur[0],from), Math.max(cur[1],to)] : [from,to]}; return afterChange(); }
+});
+objLayer.addEventListener('dblclick', e=>{
+  const el=e.target.closest('.xobj'); if(!el) return; const o=getObj(el.dataset.oid); if(!o) return;
+  if(o.type==='text' || o.type==='wordart'){ objEdit=o.id; const t=el.querySelector('.txt'); t.contentEditable='true'; t.focus(); const r=document.createRange(); r.selectNodeContents(t); r.collapse(false); getSelection().removeAllRanges(); getSelection().addRange(r);
+    t.addEventListener('blur', ()=>{ pushUndo(); o.html=t.innerHTML; objEdit=null; t.contentEditable='false'; saveBook(); renderObjects(); }, {once:true}); return; }
+  if(o.type==='file'){ download(new Blob([dataUrlBytes(o.data)], {type:o.mime||'application/octet-stream'}), o.name); return; }
+  if(o.type==='model3d'){ objEdit= objEdit===o.id ? null : o.id; renderObjects(); toast(objEdit ? 'Drag to rotate the model · double-click again to move it' : 'Move mode'); return; }
+  objBarAct(o, o.type==='chart' ? 'title' : o.type==='eq' ? 'tex' : o.type==='smartart' ? 'items' : o.type==='shape' ? 'text' : o.type==='sign' ? 'sign' : '');
+});
+function deselectObj(){ if(objSel || objEdit){ objSel=null; objEdit=null; renderObjects(); } }
+grid.addEventListener('pointerdown', ()=>deselectObj(), true);
+wrap.addEventListener('keydown', e=>{
+  if(!objSel || objEdit || e.target!==wrap) return;
+  const o=getObj(objSel); if(!o) return;
+  if(e.key==='Delete' || e.key==='Backspace'){ e.preventDefault(); e.stopImmediatePropagation(); objBarAct(o,'delete'); }
+  else if(e.key==='Escape'){ e.stopImmediatePropagation(); deselectObj(); }
+  else { const mv={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key]; if(mv){ e.preventDefault(); e.stopImmediatePropagation(); const st=e.shiftKey?10:2; o.x=Math.max(0,o.x+mv[0]*st); o.y=Math.max(0,o.y+mv[1]*st); saveBook(); renderObjects(); } }
+}, true);
+
+/* ---------- contextual toolbar for the selected object ---------- */
+const CHART_TYPES=[['column','Clustered Column'],['column-stacked','Stacked Column'],['column-100','100% Stacked Column'],['bar','Clustered Bar'],['bar-stacked','Stacked Bar'],['bar-100','100% Stacked Bar'],['line','Line'],['line-markers','Line with Markers'],['line-stacked','Stacked Line'],['area','Area'],['area-stacked','Stacked Area'],['pie','Pie'],['doughnut','Doughnut'],['treemap','Treemap'],['sunburst','Sunburst'],['histogram','Histogram'],['pareto','Pareto'],['box','Box & Whisker'],['waterfall','Waterfall'],['funnel','Funnel'],['stock','Stock (High-Low-Close)'],['scatter','Scatter'],['scatter-lines','Scatter with Lines'],['bubble','Bubble'],['combo','Combo (Column + Line)'],['combo-area','Combo (Area + Column)'],['radar','Radar'],['radar-filled','Filled Radar'],['polar','Polar Area'],['map','Filled Map']];
+function showObjBar(){
+  const o=objSel && getObj(objSel); if(!o){ objBar.classList.remove('show'); return; }
+  const B=(a,l,t)=>`<button class="tb" data-ob="${a}" title="${t||''}">${l}</button>`;
+  let h='';
+  if(o.type==='chart') h=`<select data-obs="kind">${CHART_TYPES.map(([k,l])=>`<option value="${k}"${k===o.kind?' selected':''}>${l}</option>`).join('')}</select>`+B('title','✎ Title')+B('range','⊞ Data')+B('switch','⇄ Row/Col','Switch row / column')+B('legend',`${o.legend===false?'☐':'☑'} Legend`)+B('labels',`${o.labels?'☑':'☐'} Labels`)+`<select data-obs="pal">${Object.keys(PALETTES).map(k=>`<option${k===(o.pal||'office')?' selected':''}>${k}</option>`).join('')}</select>`+B('png','⤓ PNG','Download as picture');
+  if(o.type==='shape') h=`<span class="clabel">Fill</span><input type="color" data-obc="fill" value="${toHex(o.fill||'#4472c4')}"><span class="clabel">Line</span><input type="color" data-obc="line" value="${toHex(o.line||'#2f5597')}">`+B('text','T Text')+`<span class="clabel">Text</span><input type="color" data-obc="tcolor" value="${toHex(o.tcolor||'#ffffff')}">`;
+  if(o.type==='text') h=B('edit','✎ Edit')+`<select data-obs="size">${[10,12,14,16,18,20,24,28,36,48].map(v=>`<option${v===(o.size||14)?' selected':''}>${v}</option>`).join('')}</select>`+B('bold','<b>B</b>')+`<input type="color" data-obc="color" value="${toHex(o.color||'#212529')}">`+B('align','⇆ Align');
+  if(o.type==='wordart') h=B('edit','✎ Edit')+`<select data-obs="size">${[24,32,40,48,60,72,96].map(v=>`<option${v===(o.size||40)?' selected':''}>${v}</option>`).join('')}</select>`;
+  if(o.type==='smartart') h=B('items','✎ Items')+`<select data-obs="layout">${[['list','List'],['process','Process'],['cycle','Cycle'],['hierarchy','Hierarchy'],['pyramid','Pyramid'],['matrix','Matrix']].map(([k,l])=>`<option value="${k}"${k===o.layout?' selected':''}>${l}</option>`).join('')}</select><select data-obs="pal">${Object.keys(PALETTES).map(k=>`<option${k===(o.pal||'office')?' selected':''}>${k}</option>`).join('')}</select>`;
+  if(o.type==='eq') h=B('tex','✎ Edit equation');
+  if(o.type==='sign') h=B('sign','✎ Edit');
+  if(o.type==='image') h=B('reset','↺ Original size');
+  if(o.type==='file') h=B('open','⤓ Open file');
+  if(o.type==='model3d') h=B('spin', o.spin?'⏸ Stop spin':'⟳ Spin')+B('rotate','✋ Rotate mode');
+  if(o.type==='icon') h=`<select data-obs="iconpick">${ICON_SET.map(c=>`<option${c===o.icon?' selected':''}>${c}</option>`).join('')}</select>`;
+  h+=B('front','⬆ Front')+B('back','⬇ Back')+B('dup','⧉')+B('delete','🗑','Delete');
+  objBar.innerHTML=h;
+  objBar.classList.add('show');
+  objBar.style.left=Math.max(4,o.x)+'px'; objBar.style.top=Math.max(2,o.y-objBar.offsetHeight-6)+'px';
+}
+objBar.addEventListener('mousedown', e=>{ if(e.target.closest('button')) e.preventDefault(); });
+objBar.addEventListener('click', e=>{ const b=e.target.closest('[data-ob]'); if(!b) return; const o=getObj(objSel); if(o) objBarAct(o, b.dataset.ob); });
+objBar.addEventListener('change', e=>{ const o=getObj(objSel); if(!o) return; const t=e.target; pushUndo();
+  if(t.dataset.obs){ const k=t.dataset.obs; if(k==='iconpick') o.icon=t.value; else o[k]= k==='size' ? +t.value : t.value; }
+  if(t.dataset.obc) o[t.dataset.obc]=t.value;
+  afterChange(); });
+function objBarAct(o, a){
+  const s=sh();
+  switch(a){
+    case 'delete': pushUndo(); s.objects=s.objects.filter(x=>x!==o); objSel=null; return afterChange();
+    case 'front': pushUndo(); s.objects=s.objects.filter(x=>x!==o).concat(o); return afterChange();
+    case 'back': pushUndo(); s.objects=[o].concat(s.objects.filter(x=>x!==o)); return afterChange();
+    case 'dup': { const c=JSON.parse(JSON.stringify(o)); c.id=uid(); c.x+=20; c.y+=20; return addObj(c); }
+    case 'title': { const t=prompt('Chart title', o.title||''); if(t!==null){ pushUndo(); o.title=t; afterChange(); } return; }
+    case 'range': return xDialog('Chart data range', [{k:'r', label:'Data range', value:rangeStr(o.src)}], v=>{ const R=parseRange(v.r); if(!R) return toast('Use a range like A3:D10'); pushUndo(); o.src=R; afterChange(); });
+    case 'switch': pushUndo(); o.byRow=!o.byRow; return afterChange();
+    case 'legend': pushUndo(); o.legend= o.legend===false; return afterChange();
+    case 'labels': pushUndo(); o.labels=!o.labels; return afterChange();
+    case 'png': { const ch=chartInst.get(o.id); if(ch){ const c=document.createElement('canvas'); c.width=ch.canvas.width; c.height=ch.canvas.height; const g=c.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,c.width,c.height); g.drawImage(ch.canvas,0,0); c.toBlob(b=>download(b, safeName(o.title||'chart')+'.png')); } return; }
+    case 'text': { const t=prompt('Text inside the shape', o.text||''); if(t!==null){ pushUndo(); o.text=t; afterChange(); } return; }
+    case 'edit': { const el=objLayer.querySelector(`[data-oid="${o.id}"]`); el && el.dispatchEvent(new MouseEvent('dblclick', {bubbles:true})); return; }
+    case 'bold': pushUndo(); o.bold=!o.bold; return afterChange();
+    case 'align': pushUndo(); o.align= o.align==='center' ? 'right' : o.align==='right' ? 'left' : 'center'; return afterChange();
+    case 'items': return xDialog('SmartArt text', [{k:'t', label:'One item per line (use "|" to separate)', value:(o.items||[]).join(' | ')}], v=>{ pushUndo(); o.items=v.t.split(/\s*\|\s*|\n/).map(x=>x.trim()).filter(Boolean); afterChange(); });
+    case 'tex': return xDialog('Equation (LaTeX)', [{k:'t', label:'Equation', value:o.tex}], v=>{ pushUndo(); o.tex=v.t; afterChange(); });
+    case 'sign': return xDialog('Signature Setup', [{k:'name', label:'Suggested signer', value:o.name||''}, {k:'title', label:'Signer title', value:o.title||''}, {k:'email', label:'Signer e-mail', value:o.email||''}], v=>{ pushUndo(); Object.assign(o, v); afterChange(); });
+    case 'reset': { const im=new Image(); im.onload=()=>{ pushUndo(); o.w=Math.min(800, im.width); o.h=Math.round(o.w*im.height/im.width); afterChange(); }; im.src=o.src; return; }
+    case 'open': return download(new Blob([dataUrlBytes(o.data)], {type:o.mime||'application/octet-stream'}), o.name);
+    case 'spin': pushUndo(); o.spin=!o.spin; return afterChange();
+    case 'rotate': objEdit= objEdit===o.id ? null : o.id; renderObjects(); return toast(objEdit ? 'Drag to rotate the model' : 'Move mode');
+  }
+}
+
+/* ---------- charts ---------- */
+function chartData(o){
+  const s=sh(), R=o.src; recalcSheet(s);
+  const isNumCell=(r,c)=>typeof val(r,c)==='number';
+  let hdr=false; for(let c=R.c1;c<=R.c2;c++){ const v=val(R.r1,c); if(v!=null && typeof v!=='number'){ hdr=true; break; } }
+  if(R.r1===R.r2) hdr=false;
+  const r0=R.r1+(hdr?1:0);
+  const dateCol=c=>['shortdate','longdate'].includes(fmtOf(stOf(r0,c)).nf);
+  let catCol= R.c2>R.c1 && ([...Array(R.r2-r0+1)].some((_,i)=>!isNumCell(r0+i,R.c1)) || dateCol(R.c1)) ? R.c1 : null;
+  const textCols=[]; for(let c=R.c1;c<=R.c2;c++){ if([...Array(R.r2-r0+1)].some((_,i)=>{ const v=val(r0+i,c); return v!=null && typeof v!=='number'; })) textCols.push(c); }
+  let labels=[], series=[];
+  for(let r=r0;r<=R.r2;r++) labels.push(catCol!=null ? cellText(s,r,catCol) : String(r-r0+1));
+  for(let c=R.c1;c<=R.c2;c++){ if(c===catCol || textCols.includes(c)) continue; const data=[]; for(let r=r0;r<=R.r2;r++){ const v=val(r,c); data.push(typeof v==='number'?v:null); } series.push({name: hdr ? cellText(s,R.r1,c) : 'Series '+(series.length+1), data, c}); }
+  if(o.byRow && series.length){ const ns=labels.map((l,i)=>({name:l, data:series.map(x=>x.data[i])})); labels=series.map(x=>x.name); series=ns; }
+  recalc();
+  return {labels, series, hdr, r0, textCols};
+}
+const labelsPlugin={id:'azhLabels', afterDatasetsDraw(chart, args, opts){ if(!opts.on) return; const g=chart.ctx; g.save(); g.font='11px system-ui, Arial'; g.fillStyle='#343a40'; g.textAlign='center';
+  chart.data.datasets.forEach((ds,i)=>{ const meta=chart.getDatasetMeta(i); if(meta.hidden) return; meta.data.forEach((el,j)=>{ let v=ds.data[j]; if(v==null) return; if(Array.isArray(v)) v=v[1]-v[0]; if(typeof v==='object') v=v.y ?? v.v; if(typeof v!=='number') return;
+    const p=el.tooltipPosition ? el.tooltipPosition() : el; g.fillText(fmtGeneral(+v.toFixed(2))+(opts.pct?'%':''), p.x, p.y-6); }); }); g.restore(); }};
+let chartReady=false;
+async function ensureChartPlugins(kind){
+  await need('chart');
+  if(!chartReady){ Chart.register(labelsPlugin); chartReady=true; }
+  if(kind==='treemap') await need('treemap');
+  if(kind==='box'){ await need('boxplot'); try{ Chart.register(ChartBoxPlot.BoxPlotController, ChartBoxPlot.BoxAndWiskers); }catch(e){} }
+  if(kind==='map'){ await need('geo'); try{ Chart.register(ChartGeo.ChoroplethController, ChartGeo.GeoFeature, ChartGeo.ColorScale, ChartGeo.ProjectionScale); }catch(e){} }
+}
+let worldCache=null;
+async function worldFeatures(){ if(worldCache) return worldCache; const r=await fetch(WORLD_ATLAS); const topo=await r.json(); worldCache=ChartGeo.topojson.feature(topo, topo.objects.countries).features; return worldCache; }
+const COUNTRY_ALIAS={'usa':'united states of america','us':'united states of america','united states':'united states of america','uk':'united kingdom','britain':'united kingdom','uae':'united arab emirates','ksa':'saudi arabia','korea':'south korea','republic of korea':'south korea','russia':'russia','drc':'dem. rep. congo','czech republic':'czechia'};
+function binsOf(vals){ const n=vals.length; if(!n) return {labels:[], counts:[]}; const mn=Math.min(...vals), mx=Math.max(...vals); const k=Math.max(1, Math.min(20, Math.ceil(Math.sqrt(n)))); const w=(mx-mn)/k || 1; const counts=Array(k).fill(0);
+  vals.forEach(v=>{ let i=Math.floor((v-mn)/w); if(i>=k) i=k-1; counts[i]++; }); return {labels:counts.map((_,i)=>`[${fmtGeneral(+(mn+i*w).toFixed(2))}, ${fmtGeneral(+(mn+(i+1)*w).toFixed(2))}${i===k-1?']':')'}`), counts}; }
+async function chartConfig(o, preview){
+  const K2=o.kind, d=chartData(o), pal=PALETTES[o.pal||'office']||PALETTE, col=i=>pal[i%pal.length];
+  const base={responsive:true, maintainAspectRatio:false, animation:false, plugins:{title:{display:!!o.title && !preview, text:o.title, font:{size:14}}, legend:{display:o.legend!==false, position:'bottom', labels:{boxWidth:12}}, azhLabels:{on:!!o.labels && !preview}}};
+  const ds=(extra)=>d.series.map((s,i)=>({label:s.name, data:s.data, backgroundColor:col(i), borderColor:col(i), ...extra(i,s)}));
+  const stacked=/stacked|100/.test(K2), pct=/100/.test(K2);
+  if(['column','column-stacked','column-100','bar','bar-stacked','bar-100'].includes(K2)){
+    let sets=ds(()=>({}));
+    if(pct){ const tot=d.labels.map((_,j)=>sets.reduce((a,s)=>a+Math.abs(s.data[j]||0),0)||1); sets=sets.map(s=>({...s, data:s.data.map((v,j)=>v==null?null:+(v/tot[j]*100).toFixed(2))})); }
+    const horiz=K2.startsWith('bar');
+    return {type:'bar', data:{labels:d.labels, datasets:sets}, options:{...base, indexAxis:horiz?'y':'x', plugins:{...base.plugins, azhLabels:{...base.plugins.azhLabels, pct}}, scales:{x:{stacked}, y:{stacked, ...(pct?{max:100, ticks:{callback:v=>v+'%'}}:{})}}}};
+  }
+  if(['line','line-markers','line-stacked','area','area-stacked'].includes(K2)){
+    const area=K2.startsWith('area');
+    return {type:'line', data:{labels:d.labels, datasets:ds((i)=>({fill: area ? (stacked && i>0 ? '-1' : 'origin') : false, backgroundColor: area ? col(i)+'99' : col(i), pointRadius: K2==='line-markers' ? 4 : area ? 0 : 2, tension:0}))}, options:{...base, scales:{y:{stacked}}}};
+  }
+  if(['pie','doughnut','polar'].includes(K2)){
+    const s=d.series[0]||{name:'', data:[]};
+    return {type:K2==='polar'?'polarArea':K2, data:{labels:d.labels, datasets:[{label:s.name, data:s.data.map(v=>v==null?0:Math.abs(v)), backgroundColor:d.labels.map((_,i)=>col(i)+(K2==='polar'?'cc':'')), borderColor:'#fff'}]}, options:{...base, plugins:{...base.plugins, legend:{...base.plugins.legend, position:'right'}}}};
+  }
+  if(['radar','radar-filled'].includes(K2)) return {type:'radar', data:{labels:d.labels, datasets:ds(i=>({fill:K2==='radar-filled', backgroundColor:col(i)+(K2==='radar-filled'?'55':''), pointRadius:3}))}, options:base};
+  if(['scatter','scatter-lines','bubble'].includes(K2)){
+    const S=sh(); recalcSheet(S); const R=o.src, r0=d.r0, numCols=[]; for(let c=R.c1;c<=R.c2;c++) if(!d.textCols.includes(c)) numCols.push(c);
+    const getCol=c=>{ const a=[]; for(let r=r0;r<=R.r2;r++){ const v=val(r,c); a.push(typeof v==='number'?v:null); } return a; };
+    const nm=c=>d.hdr ? cellText(S,R.r1,c) : colName(c); let sets;
+    if(K2==='bubble'){ const [xc,yc,rc]=numCols; const xs=getCol(xc), ys=getCol(yc), rs=rc!=null?getCol(rc):xs.map(()=>1); const mr=Math.max(...rs.filter(v=>v!=null),1);
+      sets=[{label:nm(yc)||'Bubbles', data:xs.map((x,i)=>({x, y:ys[i], r:4+16*Math.sqrt(Math.abs(rs[i]||0)/mr)})).filter(p=>p.x!=null&&p.y!=null), backgroundColor:col(0)+'99', borderColor:col(0)}]; }
+    else { const xc=numCols[0], xs=getCol(xc); sets=numCols.slice(1).map((c,i)=>({label:nm(c), data:getCol(c).map((y,j)=>({x:xs[j], y})).filter(p=>p.x!=null&&p.y!=null), backgroundColor:col(i), borderColor:col(i), showLine:K2==='scatter-lines', pointRadius:4}));
+      if(!sets.length) sets=[{label:nm(xc), data:xs.map((y,j)=>({x:j+1,y})).filter(p=>p.y!=null), backgroundColor:col(0), borderColor:col(0), pointRadius:4}]; }
+    recalc();
+    return {type:K2==='bubble'?'bubble':'scatter', data:{datasets:sets}, options:{...base, scales:{x:{type:'linear', title:{display:d.hdr, text:nm(numCols[0])}}}}};
+  }
+  if(K2==='histogram'){ const vals=d.series.flatMap(s=>s.data).filter(v=>v!=null); const b=binsOf(vals);
+    return {type:'bar', data:{labels:b.labels, datasets:[{label:'Frequency', data:b.counts, backgroundColor:col(0), barPercentage:1, categoryPercentage:1, borderColor:'#fff', borderWidth:1}]}, options:{...base, plugins:{...base.plugins, legend:{display:false}}}}; }
+  if(K2==='pareto'){ const s=d.series[0]||{data:[]}; const pairs=d.labels.map((l,i)=>[l, s.data[i]||0]).sort((a,b)=>b[1]-a[1]); const tot=pairs.reduce((a,p)=>a+p[1],0)||1; let cum=0;
+    return {type:'bar', data:{labels:pairs.map(p=>p[0]), datasets:[{label:s.name||'Value', data:pairs.map(p=>p[1]), backgroundColor:col(0), order:2}, {type:'line', label:'Cumulative %', data:pairs.map(p=>+((cum+=p[1])/tot*100).toFixed(1)), borderColor:col(1), backgroundColor:col(1), yAxisID:'y1', order:1, tension:0}]},
+      options:{...base, scales:{y:{beginAtZero:true}, y1:{position:'right', min:0, max:100, ticks:{callback:v=>v+'%'}, grid:{drawOnChartArea:false}}}}}; }
+  if(K2==='box'){ return {type:'boxplot', data:{labels:d.series.map(s=>s.name), datasets:[{label:'Distribution', data:d.series.map(s=>s.data.filter(v=>v!=null)), backgroundColor:d.series.map((_,i)=>col(i)+'88'), borderColor:d.series.map((_,i)=>col(i)), outlierBackgroundColor:'#495057', itemRadius:2}]}, options:{...base, plugins:{...base.plugins, legend:{display:false}, azhLabels:{on:false}}}}; }
+  if(K2==='waterfall'){ const s=d.series[0]||{data:[]}; let run=0; const bars=s.data.map(v=>{ const a=run; run+=v||0; return [a, run]; }); bars.push([0, run]);
+    return {type:'bar', data:{labels:[...d.labels,'Total'], datasets:[{label:s.name, data:bars, backgroundColor:bars.map((b,i)=>i===bars.length-1?col(2):(b[1]>=b[0]?'#70ad47':'#c00000')), borderSkipped:false}]}, options:{...base, plugins:{...base.plugins, legend:{display:false}}}}; }
+  if(K2==='funnel'){ const s=d.series[0]||{data:[]}; const mx=Math.max(...s.data.map(v=>Math.abs(v||0)),1);
+    return {type:'bar', data:{labels:d.labels, datasets:[{label:s.name, data:s.data.map(v=>[-(Math.abs(v||0))/2, Math.abs(v||0)/2]), backgroundColor:d.labels.map((_,i)=>col(0)), borderSkipped:false, barPercentage:0.95, categoryPercentage:0.95}]},
+      options:{...base, indexAxis:'y', plugins:{...base.plugins, legend:{display:false}, tooltip:{callbacks:{label:c=>fmtGeneral(c.raw[1]*2)}}}, scales:{x:{display:false, min:-mx/2*1.05, max:mx/2*1.05}, y:{grid:{display:false}}}}}; }
+  if(K2==='stock'){ const [hi,lo,cl]=d.series; if(!cl) return chartConfig({...o, kind:'line'}, preview);
+    return {type:'bar', data:{labels:d.labels, datasets:[{label:'High-Low', data:hi.data.map((h,i)=>[lo.data[i], h]), backgroundColor:'#495057', barPercentage:0.12, borderSkipped:false}, {type:'line', label:cl.name, data:cl.data, showLine:false, pointRadius:5, pointStyle:'line', borderColor:col(0), borderWidth:3}]}, options:base}; }
+  if(K2==='combo' || K2==='combo-area'){ const sets=d.series.map((s,i)=> i===0 ? (K2==='combo-area' ? {type:'line', label:s.name, data:s.data, fill:'origin', backgroundColor:col(i)+'66', borderColor:col(i), pointRadius:0, order:2} : {type:'bar', label:s.name, data:s.data, backgroundColor:col(i), order:2}) : (K2==='combo-area' ? {type:'bar', label:s.name, data:s.data, backgroundColor:col(i), order:1} : {type:'line', label:s.name, data:s.data, borderColor:col(i), backgroundColor:col(i), yAxisID:'y1', order:1, tension:0}));
+    return {type:'bar', data:{labels:d.labels, datasets:sets}, options:{...base, scales:{y:{beginAtZero:true}, ...(K2==='combo'&&d.series.length>1?{y1:{position:'right', grid:{drawOnChartArea:false}}}:{})}}}; }
+  if(K2==='treemap' || K2==='sunburst'){
+    const S=sh(); recalcSheet(S); const R=o.src, r0=d.r0, tc=d.textCols.slice(0,2), vc=d.series[0] ? d.series[0].c : null; const rows=[];
+    for(let r=r0;r<=R.r2;r++){ const v=vc!=null?val(r,vc):1; rows.push({a:tc[0]!=null?cellText(S,r,tc[0]):'All', b:tc[1]!=null?cellText(S,r,tc[1]):null, v:typeof v==='number'?Math.abs(v):0}); } recalc();
+    const groups=[...new Set(rows.map(x=>x.a))];
+    if(K2==='treemap') return {type:'treemap', data:{datasets:[{label:d.series[0]?.name||'Values', tree:rows, key:'v', groups: tc[1]!=null ? ['a','b'] : ['a'], spacing:1, borderWidth:1, borderColor:'#fff',
+        backgroundColor:c=>{ const g=c.raw && c.raw._data ? c.raw._data.a : null; const i=groups.indexOf(g); return (i<0?col(0):col(i))+(c.raw && c.raw.l===0 && tc[1]!=null ? '66' : ''); },
+        labels:{display:true, color:'#fff', font:{size:11}, formatter:c=>{ const r=c.raw; if(!r) return ''; const t=r.g ?? (r._data && (r._data.b||r._data.a)) ?? ''; return [String(t), fmtGeneral(+r.v.toFixed(2))]; }}, captions:{display:tc[1]!=null, color:'#fff'}}]}, options:{...base, plugins:{...base.plugins, legend:{display:false}}}};
+    const inner=groups.map(g=>rows.filter(x=>x.a===g).reduce((a,x)=>a+x.v,0)); const outer=[], oc=[], ol=[];
+    groups.forEach((g,i)=>rows.filter(x=>x.a===g).forEach((x,j)=>{ outer.push(x.v); oc.push(col(i)+(['ff','cc','99','77','55'][j%5])); ol.push((x.b||x.a)); }));
+    return {type:'doughnut', data:{labels:ol, datasets:[{data:outer, backgroundColor:oc, borderColor:'#fff', weight:1}, {data:inner, backgroundColor:groups.map((_,i)=>col(i)), borderColor:'#fff', weight:1.2, labels:groups}]},
+      options:{...base, cutout:'15%', plugins:{...base.plugins, legend:{display:false}, tooltip:{callbacks:{label:c=>`${c.datasetIndex===1?groups[c.dataIndex]:ol[c.dataIndex]}: ${fmtGeneral(c.raw)}`}}}}};
+  }
+  if(K2==='map'){
+    const feats=await worldFeatures(); const S=sh(); recalcSheet(S); const R=o.src, tc=d.textCols[0], vc=d.series[0] ? d.series[0].c : null; const vals={};
+    for(let r=d.r0;r<=R.r2;r++){ if(tc==null||vc==null) break; let n=cellText(S,r,tc).trim().toLowerCase(); n=COUNTRY_ALIAS[n]||n; const v=val(r,vc); if(typeof v==='number') vals[n]=v; } recalc();
+    const shown=feats.filter(f=>f.properties.name!=='Antarctica');
+    return {type:'choropleth', data:{labels:shown.map(f=>f.properties.name), datasets:[{label:d.series[0]?.name||'Value', outline:shown, data:shown.map(f=>({feature:f, value: vals[f.properties.name.toLowerCase()] ?? null})), borderColor:'#adb5bd', borderWidth:0.5}]},
+      options:{...base, showOutline:true, showGraticule:false, plugins:{...base.plugins, legend:{display:false}}, scales:{projection:{axis:'x', projection:'equalEarth'}, color:{axis:'x', quantize:5, interpolate:'blues', missing:'#f1f3f5', legend:{position:'bottom-right', align:'right'}}}}};
+  }
+  return chartConfig({...o, kind:'column'}, preview);
+}
+async function drawChart(o, canvas, preview){
+  try{
+    await ensureChartPlugins(o.kind);
+    const cv=canvas || objLayer.querySelector(`[data-oid="${o.id}"] canvas`); if(!cv) return;
+    const cfg=await chartConfig(o, preview);
+    const ch=new Chart(cv, cfg); if(!canvas) chartInst.set(o.id, ch); return ch;
+  }catch(err){ console.error(err); const el=canvas ? canvas.parentElement : objLayer.querySelector(`[data-oid="${o.id}"]`); if(el && !preview) el.insertAdjacentHTML('beforeend', `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#868e96;font-size:12px;padding:10px;text-align:center">${esc(err.message||'This chart type needs different data')}</div>`); }
+}
+function insertChart(kind, R){
+  R=R||dataRegion(); if(!R) return toast('Select the data for the chart first (or click inside a table)');
+  const p=placeNear(480, 290);
+  addObj({type:'chart', kind, src:R, title: kind==='map' ? 'Map' : '', legend:true, ...p});
+}
+async function recommendedCharts(){
+  const R=dataRegion(); if(!R) return toast('Select your data (or click inside it) first');
+  const d=chartData({src:R}); const n=d.series.length, cats=d.labels.length;
+  let rec=[];
+  if(!n){ return toast('No numbers found in the selected data'); }
+  const dateCat=['shortdate','longdate'].includes(fmtOf(stOf(d.r0,R.c1)).nf);
+  if(dateCat) rec.push('line-markers','column','area');
+  if(n===1 && cats<=7) rec.push('pie','doughnut');
+  rec.push('column','bar');
+  if(n>=2) rec.push('column-stacked','combo','line');
+  if(n===1 && d.textCols.length>=1) rec.push('pareto','treemap');
+  if(d.textCols.length===0 && n>=2) rec.unshift('scatter');
+  if(n===1 && cats>15) rec.unshift('histogram');
+  rec=[...new Set(rec)].slice(0,6);
+  const m=document.createElement('div'); m.className='modal';
+  m.innerHTML=`<div class="modal-box" style="max-width:640px;max-height:90vh;overflow:auto"><div class="modal-head"><b>Recommended Charts – ${rangeStr(R)}</b><button class="tb" data-x>✕</button></div>
+    <div class="recgrid">${rec.map((k,i)=>`<div class="rc${i===0?' on':''}" data-k="${k}"><canvas></canvas><div>${CHART_TYPES.find(t=>t[0]===k)[1]}</div></div>`).join('')}</div>
+    <div class="modal-foot"><select data-all>${CHART_TYPES.map(([k,l])=>`<option value="${k}">${l}</option>`).join('')}</select><span class="clabel">All charts</span><span class="spacer"></span><button class="btn" data-x>Cancel</button><button class="btn primary" data-ok>OK</button></div></div>`;
+  document.body.appendChild(m); let pick=rec[0]; const inst=[];
+  m.querySelector('[data-all]').value=pick;
+  busy(true,'Preparing charts…'); try{ for(const el of m.querySelectorAll('.rc')){ const ch=await drawChart({src:R, kind:el.dataset.k, legend:true}, el.querySelector('canvas'), true); if(ch) inst.push(ch); } } finally{ busy(false); }
+  const close=()=>{ inst.forEach(c=>c.destroy()); m.remove(); };
+  m.addEventListener('click', e=>{ const rc=e.target.closest('.rc'); if(rc){ m.querySelectorAll('.rc').forEach(x=>x.classList.toggle('on', x===rc)); pick=rc.dataset.k; m.querySelector('[data-all]').value=pick; }
+    if(e.target.closest('[data-x]')) close(); if(e.target.closest('[data-ok]')){ close(); insertChart(m.querySelector('[data-all]').value, R); } });
+  m.addEventListener('dblclick', e=>{ const rc=e.target.closest('.rc'); if(rc){ close(); insertChart(rc.dataset.k, R); } });
+}
+
+/* ---------- PivotTables ---------- */
+const AGGS={Sum:a=>a.reduce((x,y)=>x+y,0), Count:a=>a.length, Average:a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0, Max:a=>a.length?Math.max(...a):0, Min:a=>a.length?Math.min(...a):0, 'Count Numbers':a=>a.length};
+function isNumField(R,c){ const nf=fmtOf(stOf(R.r1+1,c)).nf; if(['shortdate','longdate','time'].includes(nf)) return false; for(let r=R.r1+1;r<=Math.min(R.r2,R.r1+30);r++) if(typeof val(r,c)==='number') return true; return false; }
+function regionHeaders(R){ const s=sh(); recalc(); const h=[]; for(let c=R.c1;c<=R.c2;c++) h.push([String(c), cellText(s,R.r1,c)||('Column '+colName(c))]); return h; }
+function computePivot(def){
+  const s=book.sheets[def.sheet]; if(!s) throw new Error('Source sheet is missing'); recalcSheet(s);
+  const R=def.src, r2=lastRowIn(s, R.c1, R.c2, R.r2); const rows=new Map(), colKeys=new Set(), sortV=new Map();
+  for(let r=R.r1+1;r<=r2;r++){
+    const rk=cellText(s,r,def.rows).trim()||'(blank)', ck= def.cols!=='' && def.cols!=null ? (cellText(s,r,+def.cols).trim()||'(blank)') : '_';
+    if(def.filterCol!=null && def.filterCol!=='' && def.filterVal && cellText(s,r,+def.filterCol).trim()!==def.filterVal) continue;
+    const v=val(r,def.val), num=typeof v==='number' ? v : null;
+    if(!rows.has(rk)){ rows.set(rk, new Map()); const sv=val(r,def.rows); sortV.set(rk, typeof sv==='number'?sv:null); } const m=rows.get(rk); if(!m.has(ck)) m.set(ck, []);
+    if(def.agg==='Count'){ if(v!=null && v!=='') m.get(ck).push(1); } else if(num!=null) m.get(ck).push(num);
+    colKeys.add(ck);
+  }
+  const sortK=a=>[...a].sort((x,y)=>x.localeCompare(y,undefined,{numeric:true}));
+  const rk=[...rows.keys()]; const allNum=rk.every(k=>sortV.get(k)!=null);
+  const rkf=fmtOf(stOf(R.r1+1, def.rows));
+  return {rowFmt: ['shortdate','longdate','time','text'].includes(rkf.nf) ? {nf:rkf.nf} : null, rowKeys: allNum ? rk.sort((a,b)=>sortV.get(a)-sortV.get(b)) : sortK(rk), colKeys:sortK(colKeys), rows, name:(def.agg==='Count'?'Count':def.agg)+' of '+cellText(s,R.r1,def.val), rowName:cellText(s,R.r1,def.rows), colName: def.cols!=='' && def.cols!=null ? cellText(s,R.r1,+def.cols) : '', fmt:stOf(R.r1+1, def.val)};
+}
+function writePivot(ts, def){
+  const P=computePivot(def), f=AGGS[def.agg]||AGGS.Sum, r0=def.at.r, c0=def.at.c, hasCols=P.colKeys.length>1 || P.colKeys[0]!=='_';
+  if(def.last) for(let r=def.last.r1;r<=def.last.r2;r++) for(let c=def.last.c1;c<=def.last.c2;c++) delete ts.cells[K(r,c)];
+  const put=(r,c,v,st)=>{ ts.cells[K(r,c)]={v:v==null?'':String(v), ...(st?{s:st}:{})}; };
+  const H={b:true, bg:'#ddebf7', bd:{b:{s:'thin',c:'#8ea9db'}}}, T={b:true, bg:'#ddebf7', bd:{t:{s:'thin',c:'#8ea9db'}}};
+  const nf=fmtOf(P.fmt); const numSt= def.agg!=='Count' && nf.nf && nf.nf!=='general' ? {nf:nf.nf, dec:nf.dec, sym:nf.sym, thou:nf.thou} : (def.agg==='Average' ? {nf:'number', dec:2, thou:true} : null);
+  let r=r0; const cks=hasCols ? P.colKeys : ['_'];
+  put(r, c0, P.name, H); if(hasCols){ put(r, c0+1, P.colName+' ▾', H); for(let j=2;j<=cks.length+1;j++) put(r, c0+j, '', H); r++; }
+  put(r, c0, P.rowName+' ▾', H); cks.forEach((k,j)=>put(r, c0+1+j, hasCols?k:P.name, H)); if(hasCols) put(r, c0+1+cks.length, 'Grand Total', H); r++;
+  const colAll=cks.map(()=>[]), allVals=[];
+  for(const rk of P.rowKeys){ const m=P.rows.get(rk); put(r, c0, rk, P.rowFmt); const rowVals=[];
+    cks.forEach((k,j)=>{ const a=m.get(k)||[]; colAll[j].push(...a); rowVals.push(...a); allVals.push(...a); put(r, c0+1+j, a.length ? +f(a).toFixed(10) : '', numSt); });
+    if(hasCols) put(r, c0+1+cks.length, +f(rowVals).toFixed(10), {...(numSt||{}), b:true}); r++; }
+  put(r, c0, 'Grand Total', T); cks.forEach((k,j)=>put(r, c0+1+j, +f(colAll[j]).toFixed(10), {...T, ...(numSt||{})})); if(hasCols) put(r, c0+1+cks.length, +f(allVals).toFixed(10), {...T, ...(numSt||{})});
+  def.last={r1:r0, c1:c0, r2:r, c2:c0+cks.length+(hasCols?1:0)};
+  ts.colW=ts.colW||{}; ts.colW[c0]=Math.max(ts.colW[c0]||0, 150);
+  ts.rows=Math.max(ts.rows, r+5); ts.cols=Math.max(ts.cols, def.last.c2+3);
+  return def.last;
+}
+function pivotDialog(withChart, preset){
+  const R=dataRegion(); if(!R || R.r2<=R.r1) return toast('Click inside your data (with a header row) first');
+  const hs=regionHeaders(R), numeric=hs.filter(([c])=>isNumField(R,+c));
+  const textH=hs.filter(h=>!numeric.includes(h));
+  xDialog(withChart ? 'Create PivotChart' : 'Create PivotTable – '+rangeStr(R), [
+    {k:'rows', label:'Rows', type:'select', options:hs, value:preset?.rows ?? (textH[0]||hs[0])[0]},
+    {k:'cols', label:'Columns (optional)', type:'select', options:[['','(none)'],...hs], value:preset?.cols ?? ''},
+    {k:'val', label:'Values', type:'select', options:hs, value:preset?.val ?? (numeric[0]||hs[hs.length-1])[0]},
+    {k:'agg', label:'Summarize by', type:'select', options:Object.keys(AGGS).filter(k=>k!=='Count Numbers').map(k=>[k,k]), value:preset?.agg ?? (numeric.length?'Sum':'Count')},
+    {k:'filterCol', label:'Filter field (optional)', type:'select', options:[['','(none)'],...hs], value:''},
+    {k:'filterVal', label:'…only rows where it equals', value:''},
+    {k:'where', label:'Place it', type:'select', options:[['new','New worksheet'],['here','This sheet, right of the data']], value:'new'}], v=>createPivot({rows:+v.rows, cols:v.cols, val:+v.val, agg:v.agg, filterCol:v.filterCol, filterVal:v.filterVal.trim()}, v.where, R, withChart));
+}
+function createPivot(spec, where, R, withChart){
+  pushUndo();
+  const def={...spec, sheet:book.active, src:R};
+  let ts=sh();
+  if(where==='new'){ let n=1; while(book.sheets.some(s=>s.name==='PivotTable'+n)) n++; ts=newSheet('PivotTable'+n); book.sheets.splice(book.active+1,0,ts); def.at={r:2, c:0}; }
+  else def.at={r:R.r1, c:R.c2+2};
+  def.id=uid(); const last=writePivot(ts, def); ts.pivots=(ts.pivots||[]).concat(def);
+  if(where==='new') book.active=book.sheets.indexOf(ts);
+  act={r:def.at.r, c:def.at.c}; ext={...act};
+  if(withChart){ const src={r1:last.r1+((spec.cols!=='' && spec.cols!=null)?1:0), c1:last.c1, r2:last.r2-1, c2: last.c2-((spec.cols!=='' && spec.cols!=null)?1:0)}; ts.objects=ts.objects||[];
+    const lastRect=cellRect(0,0); ts.objects.push({id:uid(), type:'chart', kind:'column', src, title:'', legend:true, x:46+(last.c2+2)*DEF_W, y:30, w:460, h:280}); }
+  afterChange(); toast(withChart ? 'PivotChart created' : 'PivotTable created – use PivotTable ▾ → Refresh after changing the data');
+}
+function refreshPivots(){ let n=0; pushUndo(); for(const s of book.sheets) for(const def of s.pivots||[]){ try{ writePivot(s, def); n++; }catch(e){ console.warn(e); } } afterChange(); toast(n ? `Refreshed ${n} PivotTable${n>1?'s':''}` : 'No PivotTables in this workbook'); }
+function recommendedPivots(){
+  const R=dataRegion(); if(!R || R.r2<=R.r1) return toast('Click inside your data (with a header row) first');
+  const hs=regionHeaders(R); const s=sh(); recalc();
+  const isNum=c=>isNumField(R,c);
+  const uniq=c=>{ const set=new Set(); for(let r=R.r1+1;r<=R.r2;r++) set.add(cellText(s,r,c)); return set.size; };
+  const texts=hs.filter(([c])=>!isNum(+c) && uniq(+c)<=Math.max(30,(R.r2-R.r1)/1.5)), nums=hs.filter(([c])=>isNum(+c));
+  const cands=[]; for(const t of texts){ for(const n of nums) cands.push({rows:+t[0], cols:'', val:+n[0], agg:'Sum', label:`Sum of ${n[1]} by ${t[1]}`}); cands.push({rows:+t[0], cols:'', val:+t[0], agg:'Count', label:`Count of ${t[1]}`}); }
+  for(let i=0;i<texts.length;i++) for(let j=0;j<texts.length;j++) if(i!==j && nums[0] && cands.length<12) cands.push({rows:+texts[i][0], cols:texts[j][0], val:+nums[0][0], agg:'Sum', label:`Sum of ${nums[0][1]} by ${texts[i][1]} and ${texts[j][1]}`});
+  if(!cands.length) return toast('No suitable fields found – try Insert → PivotTable');
+  const prev=c=>{ const P=computePivot({...c, sheet:book.active, src:R}); const f=AGGS[c.agg]; const hasC=P.colKeys.length>1||P.colKeys[0]!=='_';
+    return `<table class="ptable"><tr><th>${esc(P.rowName)}</th>${hasC?P.colKeys.slice(0,3).map(k=>`<th>${esc(k)}</th>`).join(''):`<th>${esc(P.name)}</th>`}</tr>${P.rowKeys.slice(0,5).map(k=>`<tr><td>${esc(k)}</td>${(hasC?P.colKeys.slice(0,3):['_']).map(ck=>{ const a=P.rows.get(k).get(ck)||[]; return `<td style="text-align:right">${a.length?fmtGeneral(+f(a).toFixed(2)):''}</td>`; }).join('')}</tr>`).join('')}${P.rowKeys.length>5?`<tr><td colspan="4">… ${P.rowKeys.length-5} more</td></tr>`:''}</table>`; };
+  const m=document.createElement('div'); m.className='modal';
+  m.innerHTML=`<div class="modal-box" style="max-width:620px;max-height:90vh;overflow:auto"><div class="modal-head"><b>Recommended PivotTables</b><button class="tb" data-x>✕</button></div>
+    <div class="recgrid">${cands.slice(0,8).map((c,i)=>`<div class="rc${i===0?' on':''}" data-i="${i}"><div style="font-weight:600;margin-bottom:4px">${esc(c.label)}</div>${prev(c)}</div>`).join('')}</div>
+    <div class="modal-foot"><button class="btn" data-blank>Blank PivotTable…</button><span class="spacer"></span><button class="btn" data-x>Cancel</button><button class="btn primary" data-ok>OK</button></div></div>`;
+  document.body.appendChild(m); let pick=0; recalc();
+  m.addEventListener('click', e=>{ const rc=e.target.closest('.rc'); if(rc){ pick=+rc.dataset.i; m.querySelectorAll('.rc').forEach(x=>x.classList.toggle('on', x===rc)); }
+    if(e.target.closest('[data-x]')) m.remove(); if(e.target.closest('[data-blank]')){ m.remove(); pivotDialog(false); }
+    if(e.target.closest('[data-ok]')){ m.remove(); const c=cands[pick]; createPivot({rows:c.rows, cols:c.cols, val:c.val, agg:c.agg}, 'new', R, false); } });
+}
+
+/* ---------- Forms (data entry) ---------- */
+function dataForm(){
+  const R=dataRegion(); if(!R || R.r2<=R.r1) return toast('Click inside a table (with a header row) first');
+  const s=sh(); const r2=lastRowIn(s, R.c1, R.c2, R.r2); const hs=regionHeaders(R); let cur=r2+1;
+  const m=document.createElement('div'); m.className='modal'; document.body.appendChild(m);
+  const draw=()=>{ const isNew=cur>lastRowIn(s,R.c1,R.c2,R.r2);
+    m.innerHTML=`<div class="modal-box" style="max-width:440px"><div class="modal-head"><b>Form – ${esc(s.name)}</b><span class="clabel">${isNew?'New record':`Record ${cur-R.r1} of ${lastRowIn(s,R.c1,R.c2,R.r2)-R.r1}`}</span><button class="tb" data-x>✕</button></div>
+      ${hs.map(([c,h])=>`<label class="frow"><span>${esc(h)}</span><input data-c="${c}" value="${esc(isNew?'':raw(cur,+c))}"></label>`).join('')}
+      <div class="modal-foot"><button class="btn" data-k="prev">◀ Prev</button><button class="btn" data-k="next">Next ▶</button><button class="btn" data-k="new">New</button>${isNew?'':'<button class="btn" data-k="del">Delete</button>'}<span class="spacer"></span><button class="btn primary" data-k="save">${isNew?'Add':'Save'}</button></div></div>`;
+    setTimeout(()=>m.querySelector('input')?.focus(), 20); };
+  draw();
+  m.addEventListener('click', e=>{ const k=e.target.closest('[data-k]')?.dataset.k; if(e.target.closest('[data-x]')){ m.remove(); return; } if(!k) return; const last=lastRowIn(s,R.c1,R.c2,R.r2);
+    if(k==='prev'){ cur=Math.max(R.r1+1, cur-1); draw(); } if(k==='next'){ cur=Math.min(last+1, cur+1); draw(); } if(k==='new'){ cur=last+1; draw(); }
+    if(k==='save'){ pushUndo(); m.querySelectorAll('[data-c]').forEach(i=>{ if(cur>=s.rows) s.rows=cur+1; setCell(cur, +i.dataset.c, i.value); }); afterChange(); toast(cur>last?'Record added':'Record saved'); cur=lastRowIn(s,R.c1,R.c2,R.r2)+1; draw(); }
+    if(k==='del'){ if(!confirm('Delete this record (row)?')) return; pushUndo(); shiftStructure('r', cur, -1); afterChange(); draw(); } });
+  m.addEventListener('keydown', e=>{ if(e.key==='Enter' && e.target.tagName==='INPUT'){ e.preventDefault(); m.querySelector('[data-k=save]').click(); } if(e.key==='Escape') m.remove(); });
+}
+
+/* ---------- Sparklines ---------- */
+function sparkSVG(type, vals, color, w, h){
+  const v=vals.map(x=>typeof x==='number'?x:null), nums=v.filter(x=>x!=null); if(!nums.length) return '';
+  const mn=Math.min(...nums,0<=Math.min(...nums)&&type!=='line'?0:Math.min(...nums)), mx=Math.max(...nums), span=(mx-mn)||1, n=v.length, bw=w/n;
+  if(type==='line'){ const pts=v.map((x,i)=>x==null?null:[(i+0.5)*bw, h-2-(x-mn)/span*(h-4)]).filter(Boolean); const mxI=v.indexOf(mx), mnI=v.indexOf(Math.min(...nums));
+    return `<svg class="spk" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${color}" stroke-width="1.5" vector-effect="non-scaling-stroke"/>${[mxI,mnI].map((i,k)=>`<circle cx="${(i+0.5)*bw}" cy="${h-2-(v[i]-mn)/span*(h-4)}" r="1.8" fill="${k?'#c00000':'#2f9e44'}"/>`).join('')}</svg>`; }
+  if(type==='column'){ const z=h-2-(0-mn)/span*(h-4); return `<svg class="spk" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">${v.map((x,i)=>x==null?'':`<rect x="${i*bw+bw*0.15}" width="${bw*0.7}" y="${Math.min(z, h-2-(x-mn)/span*(h-4))}" height="${Math.max(1,Math.abs((x-Math.max(mn,0))/span*(h-4)))}" fill="${x<0?'#c00000':color}"/>`).join('')}</svg>`; }
+  return `<svg class="spk" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">${v.map((x,i)=>x==null||x===0?'':`<rect x="${i*bw+bw*0.15}" width="${bw*0.7}" y="${x>0?2:h/2}" height="${h/2-2}" fill="${x>0?color:'#c00000'}"/>`).join('')}</svg>`;
+}
+function renderSparks(s){
+  if(!(s.sparks||[]).length) return; recalcSheet(s);
+  for(const sp of s.sparks){ const D=sp.data, L=sp.loc, vert=L.r2>L.r1 || (L.r1===L.r2 && L.c1===L.c2 && D.r2>D.r1 && D.c2>D.c1 ? false : L.r2>L.r1);
+    const cells=[]; for(let r=L.r1;r<=L.r2;r++) for(let c=L.c1;c<=L.c2;c++) cells.push([r,c]);
+    cells.forEach(([r,c],i)=>{ const td=tdAt(r,c); if(!td) return; let vals=[];
+      const byRows = cells.length===1 ? (D.r1===D.r2 || (D.c2-D.c1)>=(D.r2-D.r1)) : (L.r2>L.r1 ? (D.r2-D.r1+1)===cells.length : (D.r2-D.r1+1)===cells.length);
+      if(cells.length===1){ if(D.r1===D.r2 || D.c1!==D.c2 && D.r1===D.r2) for(let cc=D.c1;cc<=D.c2;cc++) vals.push(val(D.r1,cc)); else if(D.c1===D.c2) for(let rr=D.r1;rr<=D.r2;rr++) vals.push(val(rr,D.c1)); else for(let cc=D.c1;cc<=D.c2;cc++) vals.push(val(D.r1,cc)); }
+      else if(byRows){ for(let cc=D.c1;cc<=D.c2;cc++) vals.push(val(D.r1+i,cc)); } else { for(let rr=D.r1;rr<=D.r2;rr++) vals.push(val(rr,D.c1+i)); }
+      td.insertAdjacentHTML('beforeend', sparkSVG(sp.type, vals, sp.color||'#4472c4', 100, 30)); });
+  }
+  recalc();
+}
+function sparkDialog(type){
+  const R=norm(); const multiRow=R.r2>R.r1;
+  const loc= multiRow ? {r1:R.r1, c1:R.c2+1, r2:R.r2, c2:R.c2+1} : {r1:R.r1, c1:R.c2+1, r2:R.r1, c2:R.c2+1};
+  xDialog(`Create ${type==='winloss'?'Win/Loss':type[0].toUpperCase()+type.slice(1)} Sparklines`, [{k:'d', label:'Data Range', value:rangeStr(R)}, {k:'l', label:'Location Range', value:rangeStr(loc)}, {k:'col', label:'Colour', type:'select', value:'#4472c4', options:[['#4472c4','Blue'],['#70ad47','Green'],['#ed7d31','Orange'],['#7030a0','Purple'],['#212529','Black']]}], v=>{
+    const D=parseRange(v.d), L=parseRange(v.l); if(!D || !L) return toast('Use ranges like B2:F2 and G2');
+    if(L.r1!==L.r2 && L.c1!==L.c2) return toast('Location must be a single row or column');
+    const s=sh(); pushUndo(); s.sparks=(s.sparks||[]).filter(x=>x.loc.r2<L.r1||x.loc.r1>L.r2||x.loc.c2<L.c1||x.loc.c1>L.c2); s.sparks.push({type, data:D, loc:L, color:v.col}); afterChange(); });
+}
+
+/* ---------- link, comment, checkbox ---------- */
+function linkDialog(){
+  const st=stOf(act.r,act.c);
+  xDialog('Insert Link', [{k:'text', label:'Text to display', value:raw(act.r,act.c)}, {k:'url', label:'Address (web, e-mail or cell like Sheet2!A1)', value:st.link||'https://'}], v=>{
+    let u=v.url.trim(); if(!u || u==='https://') return; if(/^[^@\s]+@[^@\s]+\.\w+$/.test(u)) u='mailto:'+u; else if(/^www\./i.test(u)) u='https://'+u;
+    pushUndo(); const k=K(act.r,act.c), x=sh().cells[k]||{v:''}; x.v= v.text || u.replace(/^mailto:/,''); x.s=Object.assign(x.s||{}, {link:u}); sh().cells[k]=x; afterChange(); });
+}
+function followLink(u){
+  if(/^[a-z]+:/i.test(u)) return window.open(u, '_blank', 'noopener');
+  const m=u.replace(/^#/,'').match(/^(?:'?([^'!]+)'?!)?([A-Z]{1,3}\d+(?::[A-Z]{1,3}\d+)?)$/i); if(!m) return window.open('https://'+u, '_blank', 'noopener');
+  if(m[1]){ const i=book.sheets.findIndex(s=>s.name.toLowerCase()===m[1].toLowerCase()); if(i<0) return toast('Sheet not found: '+m[1]); book.active=i; renderGrid(); }
+  const R=parseRange(m[2]); act={r:R.r1,c:R.c1}; ext={r:R.r2,c:R.c2}; selChanged();
+}
+function commentDialog(){ const st=stOf(act.r,act.c); xDialog(st.note ? 'Edit Comment' : 'New Comment', [{k:'t', label:`Comment for ${colName(act.c)}${act.r+1}`, value:st.note||''}], v=>forRange(s2=>{ if(v.t.trim()) s2.note=v.t.trim(); else delete s2.note; }, {r1:act.r,c1:act.c,r2:act.r,c2:act.c})); }
+function stepComment(d){ const s=sh(); const list=Object.keys(s.cells).filter(k=>s.cells[k].s && s.cells[k].s.note).map(k=>k.split(',').map(Number)).sort((a,b)=>a[0]-b[0]||a[1]-b[1]); if(!list.length) return toast('No comments on this sheet');
+  let i=list.findIndex(([r,c])=>r>act.r || (r===act.r && c>act.c)); if(d<0){ i=list.length-1; for(let j=list.length-1;j>=0;j--){ const [r,c]=list[j]; if(r<act.r || (r===act.r && c<act.c)){ i=j; break; } } } if(i<0) i=0;
+  const [r,c]=list[i]; act={r,c}; ext={...act}; selChanged(); toast('💬 '+s.cells[K(r,c)].s.note); }
+
+/* ---------- pictures, icons, 3D, screenshot, equations, text ---------- */
+const ICON_SET='⚠️ 🦺 ⛑️ 🔥 🧯 🚧 ⛔ 🚫 ✅ ❌ ✔️ ❗ ❓ 📌 📎 📊 📈 📉 💡 🔒 🔑 🛠️ ⚙️ 🚑 🩺 💧 ⚡ ☢️ ☣️ 🚭 🏗️ 🚜 🏭 🏢 📅 ⏰ 👷 👍 👎 ⭐ ❤️ ➡️ ⬅️ ⬆️ ⬇️ 📞 ✉️ 🌐 🏠 🚗 🚚 ✈️ 🛡️ 🔔 📷 🗂️ 📋 🧾 💰 🎯 🏆 🕌 🌴'.split(' ');
+async function pictureFromFile(file){ try{ const im=await shrinkImage(file, 1400, /png|gif/i.test(file.type)); const w=Math.min(420, im.w), h=Math.round(w*im.h/im.w); addObj({type:'image', src:im.url, ...placeNear(w,h)}); }catch(e){ toast('Could not use that picture'); } }
+async function screenshot(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) return toast('Screenshots are not supported on this device – take one and use Pictures instead');
+  try{ const stream=await navigator.mediaDevices.getDisplayMedia({video:true}); const v=document.createElement('video'); v.srcObject=stream; v.muted=true; await v.play(); await new Promise(r=>setTimeout(r,400));
+    const c=document.createElement('canvas'); c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0); stream.getTracks().forEach(t=>t.stop());
+    const blob=await new Promise(r=>c.toBlob(r,'image/png')); await pictureFromFile(new File([blob],'screenshot.png',{type:'image/png'})); }catch(e){ if(e.name!=='NotAllowedError') toast('Screenshot cancelled'); }
+}
+async function loadKatex(){ if(!document.querySelector('link[data-katex]')){ const l=document.createElement('link'); l.rel='stylesheet'; l.href=KATEX_CSS; l.dataset.katex='1'; document.head.appendChild(l); } await need('katex'); }
+const EQUATIONS=[['Area of Circle','A=\\pi r^{2}'],['Binomial Theorem','(x+a)^{n}=\\sum_{k=0}^{n}\\binom{n}{k}x^{k}a^{n-k}'],['Expansion of a Sum','(1+x)^{n}=1+\\frac{nx}{1!}+\\frac{n(n-1)x^{2}}{2!}+\\cdots'],['Fourier Series','f(x)=a_{0}+\\sum_{n=1}^{\\infty}\\left(a_{n}\\cos\\frac{n\\pi x}{L}+b_{n}\\sin\\frac{n\\pi x}{L}\\right)'],['Pythagorean Theorem','a^{2}+b^{2}=c^{2}'],['Quadratic Formula','x=\\frac{-b\\pm\\sqrt{b^{2}-4ac}}{2a}'],['Taylor Expansion','e^{x}=1+\\frac{x}{1!}+\\frac{x^{2}}{2!}+\\frac{x^{3}}{3!}+\\cdots'],['Trig Identity 1','\\sin\\alpha\\pm\\sin\\beta=2\\sin\\frac{1}{2}(\\alpha\\pm\\beta)\\cos\\frac{1}{2}(\\alpha\\mp\\beta)'],['Incident Rate (TRIR)','TRIR=\\frac{\\text{Recordable cases}\\times 200{,}000}{\\text{Hours worked}}'],['LTIFR','LTIFR=\\frac{\\text{Lost-time injuries}\\times 1{,}000{,}000}{\\text{Hours worked}}']];
+async function insertEq(tex){ try{ await loadKatex(); }catch(e){ toast('Equation library could not load'); } addObj({type:'eq', tex, ...placeNear(320, 90)}); }
+
+/* ---------- print / PDF with header & footer ---------- */
+function hfText(t, s){ return esc(t||'').replace(/&amp;\[Date\]/gi, new Date().toLocaleDateString('en-GB')).replace(/&amp;\[Time\]/gi, new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})).replace(/&amp;\[Sheet\]/gi, esc(s.name)).replace(/&amp;\[File\]/gi, esc(books.cur().name)); }
+function printSheet(){
+  commitEdit(0,0,false); const s=sh(); recalc();
+  let mr=0, mc=0; for(const k in s.cells){ const [r,c]=k.split(',').map(Number); if(s.cells[k].v!=='' || s.cells[k].s){ mr=Math.max(mr,r); mc=Math.max(mc,c); } }
+  for(const o of s.objects||[]){ let x=46, c=0; while(c<s.cols && x+colW(s,c)<o.x+o.w){ x+=colW(s,c); c++; } mc=Math.max(mc,c); let y=26, r=0; while(r<s.rows && y+(s.rowH&&s.rowH[r]||26)<o.y+o.h){ y+=(s.rowH&&s.rowH[r]||26); r++; } mr=Math.max(mr,r); }
+  const fh=filteredRows(s); let w=0, html='<table><colgroup>';
+  for(let c=0;c<=mc;c++) if(!(s.hidC&&s.hidC[c])){ html+=`<col style="width:${colW(s,c)}px">`; w+=colW(s,c); }
+  html+='</colgroup>';
+  const covered=new Set(), anchors=new Map(); for(const m of s.merges||[]){ anchors.set(K(m[0],m[1]),m); for(let r=m[0];r<=m[2];r++) for(let c=m[1];c<=m[3];c++) if(r!==m[0]||c!==m[1]) covered.add(K(r,c)); }
+  const deco=decorations(s);
+  for(let r=0;r<=mr;r++){ if((s.hidR&&s.hidR[r]) || fh.has(r)) continue; html+=`<tr style="height:${(s.rowH&&s.rowH[r])||22}px">`;
+    for(let c=0;c<=mc;c++){ if(s.hidC&&s.hidC[c]) continue; const k=K(r,c); if(covered.has(k)) continue; const m=anchors.get(k), x=s.cells[k], st=(x&&x.s)||{}, d=deco.get(k)||{}, v=x?val(r,c):null;
+      html+=`<td${m?` colspan="${m[3]-m[1]+1}" rowspan="${m[2]-m[0]+1}"`:''} style="${cellStyleCSS(v,st,d)}${typeof v==='number'&&!st.ha?'text-align:right;':''}${st.wrap?'white-space:normal;':''}">${x?cellInner(v,st,d):''}</td>`; }
+    html+='</tr>'; }
+  html+='</table>';
+  let objs=''; for(const o of s.objects||[]){ const el=objLayer.querySelector(`[data-oid="${o.id}"]`); if(!el) continue; let inner;
+    if(o.type==='chart'){ const ch=chartInst.get(o.id); inner= ch ? `<img src="${ch.canvas.toDataURL('image/png')}" style="width:100%;height:100%">` : ''; } else { const c=el.cloneNode(true); c.querySelector('.handle')?.remove(); inner=c.innerHTML; }
+    objs+=`<div class="${el.className.replace(' sel','')}" style="position:absolute;left:${o.x-46}px;top:${o.y-26}px;width:${o.w}px;height:${o.h}px">${inner}</div>`; }
+  const page=1050, zoom=Math.min(1, page/Math.max(1,w));
+  $('#printArea').innerHTML=`<div class="sprint">${s.hf&&s.hf.header?`<div class="hf">${hfText(s.hf.header,s)}</div>`:''}<div style="zoom:${zoom};position:relative">${html}${objs}</div>${s.hf&&s.hf.footer?`<div class="hf">${hfText(s.hf.footer,s)}</div>`:''}</div>`;
+  $('#printArea').querySelectorAll('.spk').forEach(x=>x.style.position='static');
+  setPageStyle('@page{size:A4 landscape;margin:12mm}'); document.body.classList.add('print-slides');
+  toast('Choose "Save as PDF" in the print dialog'); setTimeout(()=>window.print(), 300);
+}
+$('#sheetPrint').onclick=printSheet;
+
+/* ---------- menus ---------- */
+const im=(act,label,arg='')=>`<button class="mi" data-act="i.${act}" data-arg="${esc(arg)}">${label}</button>`;
+const chartMenu=list=>list.map(([k,l])=>im('chart',l,k)).join('');
+Object.assign(MENUS, {
+  iPivot:()=>im('pivot','▦ From Table/Range…')+im('recPivot','✨ Recommended PivotTables…')+'<hr>'+im('refreshPivot','⟳ Refresh All PivotTables'),
+  iForms:()=>im('form','📝 Data entry form (add / edit records)…'),
+  iPictures:()=>im('picFile','🖼 This Device…')+im('picClip','📋 From Clipboard'),
+  iShapes:()=>'<div class="mh">Shapes</div><div class="shapepick">'+Object.keys(SHAPES).map(k=>`<button data-act="i.shape" data-arg="${k}" title="${k}"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${SHAPES[k]}" vector-effect="non-scaling-stroke"/></svg></button>`).join('')+'</div>',
+  iIcons:()=>'<div class="mh">Icons</div><div class="iconpick">'+ICON_SET.map(c=>`<button data-act="i.icon" data-arg="${c}">${c}</button>`).join('')+'</div>',
+  iSmartArt:()=>[['list','☰ List'],['process','➜ Process'],['cycle','⟳ Cycle'],['hierarchy','⛬ Hierarchy'],['pyramid','△ Pyramid'],['matrix','▦ Matrix']].map(([k,l])=>im('smartart',l,k)).join(''),
+  iShot:()=>im('screenshot','📷 Screen Clipping (choose a window or screen)…'),
+  cColumn:()=>'<div class="mh">2-D Column</div>'+chartMenu([['column','Clustered Column'],['column-stacked','Stacked Column'],['column-100','100% Stacked Column']])+'<div class="mh">2-D Bar</div>'+chartMenu([['bar','Clustered Bar'],['bar-stacked','Stacked Bar'],['bar-100','100% Stacked Bar']]),
+  cLine:()=>'<div class="mh">Line</div>'+chartMenu([['line','Line'],['line-markers','Line with Markers'],['line-stacked','Stacked Line']])+'<div class="mh">Area</div>'+chartMenu([['area','Area'],['area-stacked','Stacked Area']]),
+  cPie:()=>chartMenu([['pie','Pie'],['doughnut','Doughnut']]),
+  cHier:()=>chartMenu([['treemap','Treemap'],['sunburst','Sunburst']]),
+  cStat:()=>'<div class="mh">Histogram</div>'+chartMenu([['histogram','Histogram'],['pareto','Pareto']])+'<div class="mh">Box &amp; Whisker</div>'+chartMenu([['box','Box &amp; Whisker']]),
+  cScatter:()=>chartMenu([['scatter','Scatter'],['scatter-lines','Scatter with Lines'],['bubble','Bubble']]),
+  cWater:()=>chartMenu([['waterfall','Waterfall'],['funnel','Funnel'],['stock','Stock (High-Low-Close)']]),
+  cCombo:()=>chartMenu([['combo','Clustered Column – Line on Secondary Axis'],['combo-area','Stacked Area – Clustered Column']]),
+  cRadar:()=>chartMenu([['radar','Radar'],['radar-filled','Filled Radar'],['polar','Polar Area']]),
+  iLink:()=>im('link','🔗 Insert Link… (Ctrl+K)')+im('openLink','↗ Open Link')+im('removeLink','✕ Remove Link'),
+  iComment:()=>im('comment','💬 New / Edit Comment…')+im('delComment','🗑 Delete Comment')+im('prevComment','◀ Previous Comment')+im('nextComment','Next Comment ▶'),
+  iText:()=>im('textbox','▭ Text Box')+im('hf','▤ Header &amp; Footer…')+im('wordart','𝔸 WordArt')+im('signature','✍ Signature Line…')+im('object','📎 Object (attach a file)…'),
+  iEq:()=>'<div class="mh">Built-in</div>'+EQUATIONS.map(([n,t],i)=>im('eq',esc(n),String(i))).join('')+'<hr>'+im('eqNew','π Insert New Equation (LaTeX)…'),
+  iSym:()=>`<div class="symgrid">${SYMBOLS.map(x=>`<button data-act="i.sym" data-arg="${esc(x)}">${esc(x)}</button>`).join('')}</div>`,
+});
+function iAct(a, arg){
+  const s=sh(), R=norm();
+  switch(a){
+    case 'pivot': return pivotDialog(false);
+    case 'recPivot': return recommendedPivots();
+    case 'refreshPivot': return refreshPivots();
+    case 'pivotChart': return pivotDialog(true);
+    case 'table': return xAct('table', 'blue');
+    case 'form': return dataForm();
+    case 'picFile': return pickFiles('image/*', false).then(f=>f[0] && pictureFromFile(f[0]));
+    case 'picClip': navigator.clipboard.read().then(async items=>{ for(const it of items){ const t=it.types.find(x=>x.startsWith('image/')); if(t) return pictureFromFile(new File([await it.getType(t)], 'clip.png', {type:t})); } toast('No picture on the clipboard'); }).catch(()=>toast('Clipboard access blocked – use This Device instead')); return;
+    case 'shape': return addObj({type:'shape', shape:arg, fill: arg.startsWith('line')||arg==='arrowLine' ? 'none' : '#4472c4', line:'#2f5597', ...placeNear(arg==='line'||arg==='arrowLine'?160:150, arg==='line'||arg==='arrowLine'?90:100)});
+    case 'icon': return addObj({type:'icon', icon:arg, ...placeNear(64,64)});
+    case 'model3d': return pickFiles('.glb,.gltf', false).then(async f=>{ if(!f[0]) return; if(f[0].size>12e6) return toast('Please use a model under 12 MB'); await need('mv').catch(()=>{}); const r=new FileReader(); r.onload=()=>addObj({type:'model3d', src:r.result, spin:true, ...placeNear(320,260)}); r.readAsDataURL(f[0]); });
+    case 'smartart': return xDialog('SmartArt – '+arg, [{k:'t', label:'Items (separate with |)', value: arg==='hierarchy' ? 'HSE Manager | Safety Engineer | Safety Officer | Site Supervisor' : arg==='process' ? 'Identify | Assess | Control | Review' : arg==='cycle' ? 'Plan | Do | Check | Act' : arg==='pyramid' ? 'Elimination | Substitution | Engineering | Administrative | PPE' : arg==='matrix' ? 'Strengths | Weaknesses | Opportunities | Threats' : 'Item one | Item two | Item three'}], v=>{
+      const items=v.t.split('|').map(x=>x.trim()).filter(Boolean); addObj({type:'smartart', layout:arg, items, pal:'office', ...placeNear(arg==='process'?520:420, arg==='list'?Math.max(120,items.length*44):260)}); });
+    case 'screenshot': return screenshot();
+    case 'checkbox': { pushUndo(); forCells((r,c)=>{ const k=K(r,c), x=s.cells[k]||{v:''}; x.s=Object.assign(x.s||{}, {chk:true}); if(!/^(TRUE|FALSE)$/i.test(String(x.v))) x.v='FALSE'; s.cells[k]=x; }); return afterChange(); }
+    case 'recChart': return recommendedCharts();
+    case 'chart': return insertChart(arg);
+    case 'map': { const Rg=dataRegion(); if(!Rg) return toast('Select a table with country names and values'); return insertChart('map', Rg); }
+    case 'spark': return sparkDialog(arg);
+    case 'slicer': { let a2=afRange(s); if(!a2){ const reg=currentRegion(); if(!reg) return toast('Click inside your table first'); pushUndo(); s.af={r1:reg.r1,c1:reg.c1,r2:reg.r2,c2:reg.c2,f:{}}; a2=afRange(s); }
+      const hs=regionHeaders(a2); return xDialog('Insert Slicers', hs.map(([c,h])=>({k:'c'+c, label:h, type:'check', value:+c===act.c})), v=>{ let n=0; pushUndo(); s.objects=s.objects||[];
+        hs.forEach(([c,h])=>{ if(v['c'+c]){ const p=placeNear(170, 220); s.objects.push({id:uid(), type:'slicer', col:+c, title:h, ...p, x:p.x+n*180}); n++; } }); afterChange(); }); }
+    case 'timeline': { let a2=afRange(s); if(!a2){ const reg=currentRegion(); if(!reg) return toast('Click inside your table first'); pushUndo(); s.af={r1:reg.r1,c1:reg.c1,r2:reg.r2,c2:reg.c2,f:{}}; a2=afRange(s); }
+      recalc(); const hs=regionHeaders(a2).filter(([c])=>{ const nf=fmtOf(stOf(a2.r1+1,+c)).nf; return nf==='shortdate'||nf==='longdate'; });
+      if(!hs.length) return toast('No date column found – format a column as Short Date first');
+      return xDialog('Insert Timeline', [{k:'c', label:'Date field', type:'select', options:hs, value:hs[0][0]}], v=>{ const h=hs.find(x=>x[0]===v.c); addObj({type:'timeline', col:+v.c, title:h[1], ...placeNear(520, 92)}); }); }
+    case 'link': return linkDialog();
+    case 'openLink': { const u=stOf(act.r,act.c).link; return u ? followLink(u) : toast('This cell has no link'); }
+    case 'removeLink': return forRange(st=>{ delete st.link; });
+    case 'comment': return commentDialog();
+    case 'delComment': return forRange(st=>{ delete st.note; });
+    case 'prevComment': return stepComment(-1); case 'nextComment': return stepComment(1);
+    case 'textbox': return addObj({type:'text', html:'Text', size:14, ...placeNear(200, 70)});
+    case 'wordart': return addObj({type:'wordart', html:'Your text here', size:40, ...placeNear(420, 80)});
+    case 'signature': return xDialog('Signature Setup', [{k:'name', label:'Suggested signer', value:''}, {k:'title', label:"Suggested signer's title", value:''}, {k:'email', label:"Suggested signer's e-mail", value:''}], v=>addObj({type:'sign', ...v, ...placeNear(260, 90)}));
+    case 'object': return pickFiles('', false).then(f=>{ if(!f[0]) return; if(f[0].size>5e6) return toast('Please attach a file under 5 MB'); const r=new FileReader(); r.onload=()=>addObj({type:'file', name:f[0].name, mime:f[0].type, data:r.result, ...placeNear(110, 80)}); r.readAsDataURL(f[0]); });
+    case 'hf': return xDialog('Header & Footer (used when printing)', [{k:'header', label:'Header', value:(s.hf&&s.hf.header)||'&[File] – &[Sheet]'}, {k:'footer', label:'Footer', value:(s.hf&&s.hf.footer)||'Printed &[Date]'}], v=>{ pushUndo(); s.hf={header:v.header, footer:v.footer}; afterChange(); toast('Use PDF / Print to see them. Codes: &[Date] &[Time] &[Sheet] &[File]'); });
+    case 'eq': return insertEq(EQUATIONS[+arg][1]);
+    case 'eqNew': return xDialog('Insert New Equation', [{k:'t', label:'LaTeX (e.g. x^2 + y^2 = r^2)', value:''}], v=>{ if(v.t.trim()) insertEq(v.t.trim()); });
+    case 'sym': startEdit(raw(act.r,act.c)+arg); return;
+    case 'clearSpark': pushUndo(); s.sparks=(s.sparks||[]).filter(x=>x.loc.r2<R.r1||x.loc.r1>R.r2||x.loc.c2<R.c1||x.loc.c1>R.c2); return afterChange();
+    case 'clearObjects': if(!(s.objects||[]).length) return toast('No objects on this sheet'); if(!confirm('Delete all charts and objects on this sheet?')) return; pushUndo(); s.objects=[]; objSel=null; return afterChange();
+  }
+}
+$('#sheetToolbar').addEventListener('click', e=>{ const b=e.target.closest('[data-i]'); if(!b) return; commitEdit(0,0,false); const [a,g]=b.dataset.i.split(':'); iAct(a, g); });
+$('#menuLayer').addEventListener('click', e=>{ const b=e.target.closest('[data-act^="i."]'); if(!b) return; e.stopPropagation(); const a=b.dataset.act.slice(2), g=b.dataset.arg; closeMenu(); commitEdit(0,0,false); iAct(a, g); }, true);
+MENUS.xClear=(orig=>()=>orig()+'<hr>'+im('clearSpark','Clear Sparklines')+im('clearObjects','Delete all charts &amp; objects on this sheet'))(MENUS.xClear);
 /* ================================================================
    SLIDES
    ================================================================ */
