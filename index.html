@@ -1,0 +1,1048 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AZH Office</title>
+<meta name="theme-color" content="#17805a">
+<!-- Libraries: Excel import/export, Word import, Word export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.js" defer></script>
+<style>
+:root{--bg:#eef0f3;--panel:#fff;--panel2:#f6f7f9;--text:#1d2329;--muted:#667085;--line:#d6dae0;--accent:#17805a;--accent-soft:#e2f3eb;--page:#fff;--sel:rgba(23,128,90,.16);--err:#c0392b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)}
+html[data-theme=dark]{--bg:#111418;--panel:#1a1e24;--panel2:#20252c;--text:#e6e8eb;--muted:#9aa3ae;--line:#323942;--accent:#3ccf91;--accent-soft:#1d3a2e;--page:#1c2027;--sel:rgba(60,207,145,.2);--err:#ff7b6b;--shadow:none}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
+button,select,input{font:inherit;color:inherit}
+.topbar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--panel);border-bottom:1px solid var(--line)}
+.brand{font-weight:700;white-space:nowrap}.brand span{color:var(--accent)}
+.tabs{display:flex;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:2px}
+.tabs button{border:0;background:none;padding:5px 14px;border-radius:6px;cursor:pointer;color:var(--muted)}
+.tabs button.active{background:var(--panel);color:var(--text);box-shadow:var(--shadow);font-weight:600}
+.spacer{flex:1}
+.btn,.tb{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:30px;padding:4px 10px;border:1px solid var(--line);background:var(--panel);border-radius:6px;cursor:pointer;white-space:nowrap;font-size:13px;flex:none}
+.btn:hover{border-color:var(--accent)}
+.tb{min-width:30px;padding:4px 7px;border-color:transparent;background:none}
+.tb:hover{background:var(--panel2)}
+.tb.on{background:var(--accent-soft);color:var(--accent)}
+.tb svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.app{display:none;flex:1;flex-direction:column;min-height:0}
+.app.active{display:flex}
+.filebar,.toolbar{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:thin;flex:none}
+.filebar select{min-width:140px;max-width:220px;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);min-height:30px;flex:none}
+.toolbar select{padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--panel);min-height:30px;flex:none}
+.sep{width:1px;align-self:stretch;background:var(--line);margin:2px 4px;flex:none}
+input[type=color]{width:30px;height:30px;padding:2px;border:1px solid var(--line);border-radius:6px;background:var(--panel);cursor:pointer;flex:none}
+.clabel{font-size:11px;color:var(--muted);flex:none}
+.status{display:flex;justify-content:space-between;gap:12px;padding:4px 12px;font-size:12px;color:var(--muted);background:var(--panel);border-top:1px solid var(--line);white-space:nowrap;overflow:hidden;flex:none}
+/* Docs */
+.page-wrap{flex:1;overflow:auto;padding:24px 12px}
+.page{max-width:816px;min-height:1056px;margin:0 auto;background:var(--page);box-shadow:var(--shadow);border:1px solid var(--line);padding:72px 80px;outline:none;font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif;font-size:15px;line-height:1.55;overflow-wrap:break-word}
+.page h1{font-size:28px;margin:.4em 0}.page h2{font-size:22px;margin:.5em 0}.page h3{font-size:18px;margin:.5em 0}
+.page p{margin:0 0 .6em}
+.page table{border-collapse:collapse;width:100%;margin:8px 0}
+.page td,.page th{border:1px solid #999;padding:4px 6px;vertical-align:top}
+.page img{max-width:100%;height:auto}
+.page a{color:var(--accent)}
+/* Sheets */
+.fbar{display:flex;align-items:center;gap:8px;padding:4px 12px;background:var(--panel);border-bottom:1px solid var(--line);flex:none}
+#cellName{min-width:64px;font-weight:600;font-size:12px;color:var(--muted);text-align:center;border-right:1px solid var(--line);padding-right:8px}
+#fbar{flex:1;min-width:0;border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:var(--panel);min-height:28px;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+#gridWrap{flex:1;overflow:auto;position:relative;background:var(--panel);outline:none;-webkit-user-select:none;user-select:none}
+#grid{border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:13px}
+#grid th,#grid td{width:100px;height:26px;padding:0 6px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background-color:var(--panel)}
+#grid td.n{text-align:right}#grid td.b{text-align:center}#grid td.e{color:var(--err);text-align:center}
+#grid thead th{position:sticky;top:0;z-index:3;background-color:var(--panel2);color:var(--muted);font-weight:600;font-size:12px;text-align:center;cursor:pointer}
+#grid .rowh{position:sticky;left:0;z-index:2;width:46px;background-color:var(--panel2);color:var(--muted);font-weight:500;font-size:12px;text-align:center;cursor:pointer}
+#grid thead .corner{left:0;z-index:4;width:46px}
+#grid tr.frozen td,#grid tr.frozen th{position:sticky;top:26px;z-index:2;border-bottom:2px solid var(--accent)}
+#grid tr.frozen .rowh{z-index:3}
+#grid .hsel{background-color:var(--accent-soft);color:var(--accent)}
+#grid td.sel{background-image:linear-gradient(var(--sel),var(--sel))}
+#grid td.cur{box-shadow:inset 0 0 0 2px var(--accent)}
+#cellEditor{position:absolute;z-index:6;border:2px solid var(--accent);padding:0 4px;background:var(--panel);color:var(--text);font:13px system-ui,-apple-system,"Segoe UI",Arial,sans-serif;outline:none;box-shadow:var(--shadow);-webkit-user-select:text;user-select:text}
+.tabbar{display:flex;align-items:center;gap:4px;padding:4px 8px;background:var(--panel2);border-top:1px solid var(--line);overflow-x:auto;flex:none}
+#sheetTabs{display:flex;gap:4px}
+.stab{border:1px solid transparent;background:none;padding:4px 12px;border-radius:6px;cursor:pointer;color:var(--muted);white-space:nowrap}
+.stab.active{background:var(--panel);border-color:var(--line);color:var(--accent);font-weight:600}
+#toast{position:fixed;left:50%;bottom:48px;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--panel);padding:8px 16px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:50;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:700px){.page{padding:28px 20px;min-height:70vh}.page-wrap{padding:10px 6px}.brand{display:none}.topbar{padding:6px 8px}}
+@media print{
+  body{display:block;height:auto;overflow:visible;background:#fff;color:#000}
+  .topbar,.filebar,.toolbar,.status,#toast,#sheetApp{display:none!important}
+  .page-wrap{padding:0;overflow:visible}
+  .page{box-shadow:none;border:0;margin:0;max-width:none;min-height:0;padding:0;background:#fff;color:#000}
+}
+</style>
+</head>
+<body data-app="doc">
+
+<header class="topbar">
+  <div class="brand">AZH <span>Office</span></div>
+  <nav class="tabs">
+    <button data-app="doc" class="active">Docs</button>
+    <button data-app="sheet">Sheets</button>
+  </nav>
+  <div class="spacer"></div>
+  <button class="btn" id="backupBtn" title="Download a backup of all files">Backup</button>
+  <label class="btn" title="Restore files from a backup">Restore<input type="file" id="restoreIn" accept=".json" hidden></label>
+  <button class="btn" id="themeBtn" title="Light / dark mode">🌙</button>
+</header>
+
+<!-- ================= DOCS ================= -->
+<section id="docApp" class="app active">
+  <div class="filebar">
+    <select id="docList" title="Your documents"></select>
+    <button class="btn" id="docNew">New</button>
+    <button class="btn" id="docRename">Rename</button>
+    <button class="btn" id="docDelete">Delete</button>
+    <span class="sep"></span>
+    <label class="btn">Open .docx<input type="file" id="docOpen" accept=".docx" hidden></label>
+    <button class="btn" id="docExport">Save .docx</button>
+    <button class="btn" id="docPdf">PDF / Print</button>
+  </div>
+  <div class="toolbar" id="docToolbar">
+    <button class="tb" data-cmd="undo" title="Undo">↶</button>
+    <button class="tb" data-cmd="redo" title="Redo">↷</button>
+    <span class="sep"></span>
+    <select id="docBlock" title="Style">
+      <option value="P">Normal</option><option value="H1">Heading 1</option>
+      <option value="H2">Heading 2</option><option value="H3">Heading 3</option>
+      <option value="BLOCKQUOTE">Quote</option>
+    </select>
+    <select id="docSize" title="Font size">
+      <option value="" selected disabled>Size</option>
+      <option value="1">Tiny</option><option value="2">Small</option><option value="3">Normal</option>
+      <option value="4">Medium</option><option value="5">Large</option><option value="6">X-Large</option><option value="7">Huge</option>
+    </select>
+    <span class="sep"></span>
+    <button class="tb" data-cmd="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+    <button class="tb" data-cmd="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+    <button class="tb" data-cmd="underline" title="Underline (Ctrl+U)"><u>U</u></button>
+    <button class="tb" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+    <span class="clabel">Text</span><input type="color" id="docColor" value="#c0392b" title="Text colour">
+    <span class="clabel">Mark</span><input type="color" id="docHilite" value="#fff176" title="Highlight">
+    <span class="sep"></span>
+    <button class="tb" data-cmd="insertUnorderedList" title="Bullet list">• List</button>
+    <button class="tb" data-cmd="insertOrderedList" title="Numbered list">1. List</button>
+    <button class="tb" data-cmd="outdent" title="Decrease indent">⇤</button>
+    <button class="tb" data-cmd="indent" title="Increase indent">⇥</button>
+    <span class="sep"></span>
+    <button class="tb" data-cmd="justifyLeft" title="Align left"><svg viewBox="0 0 16 16"><path d="M2 3h12M2 6.5h8M2 10h12M2 13.5h8"/></svg></button>
+    <button class="tb" data-cmd="justifyCenter" title="Centre"><svg viewBox="0 0 16 16"><path d="M2 3h12M4 6.5h8M2 10h12M4 13.5h8"/></svg></button>
+    <button class="tb" data-cmd="justifyRight" title="Align right"><svg viewBox="0 0 16 16"><path d="M2 3h12M6 6.5h8M2 10h12M6 13.5h8"/></svg></button>
+    <button class="tb" data-cmd="justifyFull" title="Justify"><svg viewBox="0 0 16 16"><path d="M2 3h12M2 6.5h12M2 10h12M2 13.5h12"/></svg></button>
+    <span class="sep"></span>
+    <button class="tb" id="docTable" title="Insert table">Table</button>
+    <label class="tb" title="Insert image">Image<input type="file" id="docImage" accept="image/*" hidden></label>
+    <button class="tb" id="docLink" title="Insert link">Link</button>
+    <button class="tb" data-cmd="insertHorizontalRule" title="Divider line">―</button>
+    <button class="tb" data-cmd="removeFormat" title="Clear formatting">Clear</button>
+  </div>
+  <div class="page-wrap"><div id="editor" class="page" contenteditable="true" spellcheck="true"></div></div>
+  <footer class="status"><span id="docCount"></span><span id="docSaved">Saved</span></footer>
+</section>
+
+<!-- ================= SHEETS ================= -->
+<section id="sheetApp" class="app">
+  <div class="filebar">
+    <select id="bookList" title="Your workbooks"></select>
+    <button class="btn" id="bookNew">New</button>
+    <button class="btn" id="bookRename">Rename</button>
+    <button class="btn" id="bookDelete">Delete</button>
+    <span class="sep"></span>
+    <label class="btn">Open .xlsx/.csv<input type="file" id="bookOpen" accept=".xlsx,.xls,.csv" hidden></label>
+    <button class="btn" id="saveXlsx">Save .xlsx</button>
+    <button class="btn" id="saveCsv">Save .csv</button>
+  </div>
+  <div class="toolbar" id="sheetToolbar">
+    <button class="tb" id="sUndo" title="Undo (Ctrl+Z)">↶</button>
+    <button class="tb" id="sRedo" title="Redo (Ctrl+Y)">↷</button>
+    <span class="sep"></span>
+    <button class="tb" id="sBold" title="Bold"><b>B</b></button>
+    <button class="tb" id="sItal" title="Italic"><i>I</i></button>
+    <button class="tb" id="sUnder" title="Underline"><u>U</u></button>
+    <span class="clabel">Text</span><input type="color" id="sColor" value="#c0392b" title="Text colour">
+    <span class="clabel">Fill</span><input type="color" id="sFill" value="#fff176" title="Fill colour">
+    <button class="tb" data-align="left" title="Align left"><svg viewBox="0 0 16 16"><path d="M2 3h12M2 6.5h8M2 10h12M2 13.5h8"/></svg></button>
+    <button class="tb" data-align="center" title="Centre"><svg viewBox="0 0 16 16"><path d="M2 3h12M4 6.5h8M2 10h12M4 13.5h8"/></svg></button>
+    <button class="tb" data-align="right" title="Align right"><svg viewBox="0 0 16 16"><path d="M2 3h12M6 6.5h8M2 10h12M6 13.5h8"/></svg></button>
+    <select id="sFmt" title="Number format">
+      <option value="gen">General</option><option value="num2">1,234.00</option><option value="int">1,234</option>
+      <option value="cur">SAR 1,234.00</option><option value="pct">Percent %</option><option value="date">Date</option>
+    </select>
+    <button class="tb" id="sClearFmt" title="Clear formatting">Clear fmt</button>
+    <span class="sep"></span>
+    <button class="tb" id="sAddRow" title="Insert row above">+Row</button>
+    <button class="tb" id="sAddCol" title="Insert column left">+Col</button>
+    <button class="tb" id="sDelRow" title="Delete selected rows">−Row</button>
+    <button class="tb" id="sDelCol" title="Delete selected columns">−Col</button>
+    <span class="sep"></span>
+    <button class="tb" id="sSortAsc" title="Sort by this column A→Z">A→Z</button>
+    <button class="tb" id="sSortDesc" title="Sort by this column Z→A">Z→A</button>
+    <button class="tb" id="sFilter" title="Filter by this column">Filter</button>
+    <button class="tb" id="sFreeze" title="Freeze first row">Freeze row 1</button>
+  </div>
+  <div class="fbar"><span id="cellName">A1</span><input id="fbar" placeholder="Value or =formula" autocomplete="off" spellcheck="false"></div>
+  <div id="gridWrap" tabindex="0">
+    <table id="grid"></table>
+    <input id="cellEditor" hidden autocomplete="off" spellcheck="false">
+  </div>
+  <div class="tabbar">
+    <div id="sheetTabs"></div>
+    <button class="tb" id="addSheet" title="Add sheet">+</button>
+    <button class="tb" id="delSheet" title="Delete current sheet">−</button>
+  </div>
+  <footer class="status"><span id="sStatus"></span><span>Double-click a tab to rename</span></footer>
+</section>
+
+<div id="toast"></div>
+
+<script>
+'use strict';
+/* ============ Helpers ============ */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+const safeName = n => (n || 'untitled').replace(/[\\/:*?"<>|]+/g, '_').trim() || 'untitled';
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),2600); }
+function download(blob, name){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},1500); }
+
+const store = {
+  get(k, d){ try{ const v=localStorage.getItem(k); return v==null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+
+/* A list of saved files (documents or workbooks) */
+class FileSet {
+  constructor(prefix, blank){
+    this.prefix=prefix; this.blank=blank;
+    this.index=store.get(prefix+'.index', []); this.active=store.get(prefix+'.active', null);
+    if(!Array.isArray(this.index)) this.index=[];
+    if(!this.index.length) this.create('Untitled');
+    if(!this.index.some(f=>f.id===this.active)) this.setActive(this.index[0].id);
+  }
+  key(id){ return this.prefix+'.'+id; }
+  saveIndex(){ store.set(this.prefix+'.index', this.index); store.set(this.prefix+'.active', this.active); }
+  create(name, data){
+    const id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    this.index.push({id, name, updated:Date.now()});
+    store.set(this.key(id), data===undefined ? this.blank() : data);
+    this.active=id; this.saveIndex(); return id;
+  }
+  setActive(id){ this.active=id; this.saveIndex(); }
+  cur(){ return this.index.find(f=>f.id===this.active); }
+  load(){ const d=store.get(this.key(this.active), null); return d==null ? this.blank() : d; }
+  save(data){ const ok=store.set(this.key(this.active), data); const f=this.cur(); if(f){ f.updated=Date.now(); this.saveIndex(); } return ok; }
+  rename(name){ this.cur().name=name; this.saveIndex(); }
+  remove(){
+    store.del(this.key(this.active));
+    this.index=this.index.filter(f=>f.id!==this.active);
+    if(!this.index.length) this.create('Untitled'); else this.setActive(this.index[0].id);
+  }
+  fill(sel){ sel.innerHTML=this.index.map(f=>`<option value="${f.id}"${f.id===this.active?' selected':''}>${esc(f.name)}</option>`).join(''); }
+  all(){ return this.index.map(f=>({name:f.name, data:store.get(this.key(f.id), null)})); }
+}
+
+/* ============ Theme + app tabs ============ */
+const root=document.documentElement;
+function setTheme(t){ root.dataset.theme=t; store.set('azh.theme', t); $('#themeBtn').textContent = t==='dark' ? '☀️' : '🌙'; }
+setTheme(store.get('azh.theme', matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+$('#themeBtn').onclick=()=>setTheme(root.dataset.theme==='dark' ? 'light' : 'dark');
+
+function showApp(name){
+  if(name==='sheet') flushDoc(); else { commitEdit(0,0,false); flushBook(); }
+  $$('.app').forEach(a=>a.classList.toggle('active', a.id===name+'App'));
+  $$('.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.app===name));
+  document.body.dataset.app=name; store.set('azh.app', name);
+  if(name==='sheet'){ renderGrid(); wrap.focus({preventScroll:true}); }
+}
+$$('.tabs button').forEach(b=>b.onclick=()=>showApp(b.dataset.app));
+
+/* ================================================================
+   DOCS
+   ================================================================ */
+const docs=new FileSet('azh.doc', ()=>'<h1>Untitled document</h1><p><br></p>');
+const editor=$('#editor');
+let savedRange=null, docTimer=null;
+
+function loadDoc(){ editor.innerHTML=docs.load(); docs.fill($('#docList')); updateCount(); $('#docSaved').textContent='Saved'; }
+function updateCount(){ const t=editor.innerText.trim(); const w=t ? t.split(/\s+/).length : 0; $('#docCount').textContent=`${w} words · ${t.length} characters`; }
+function queueDocSave(){
+  $('#docSaved').textContent='Saving…'; clearTimeout(docTimer);
+  docTimer=setTimeout(()=>{ docTimer=null; $('#docSaved').textContent = docs.save(editor.innerHTML) ? 'Saved' : 'Not saved – storage full (use Save .docx or Backup)'; }, 500);
+  updateCount();
+}
+function flushDoc(){ if(docTimer){ clearTimeout(docTimer); docTimer=null; docs.save(editor.innerHTML); $('#docSaved').textContent='Saved'; } }
+editor.addEventListener('input', queueDocSave);
+document.addEventListener('selectionchange', ()=>{ const s=getSelection(); if(s.rangeCount && editor.contains(s.anchorNode)) savedRange=s.getRangeAt(0).cloneRange(); });
+function restoreSel(){ editor.focus(); if(savedRange){ const s=getSelection(); s.removeAllRanges(); s.addRange(savedRange); } }
+function exec(cmd, val=null){ restoreSel(); document.execCommand(cmd, false, val); queueDocSave(); }
+
+$('#docToolbar').addEventListener('mousedown', e=>{ if(e.target.closest('button')) e.preventDefault(); });
+$$('#docToolbar [data-cmd]').forEach(b=>b.addEventListener('click', ()=>exec(b.dataset.cmd)));
+$('#docBlock').onchange=e=>exec('formatBlock', '<'+e.target.value+'>');
+$('#docSize').onchange=e=>{ exec('fontSize', e.target.value); e.target.selectedIndex=0; };
+$('#docColor').onchange=e=>exec('foreColor', e.target.value);
+$('#docHilite').onchange=e=>exec('hiliteColor', e.target.value);
+$('#docLink').onclick=()=>{ const u=prompt('Link address', 'https://'); if(u && u!=='https://') exec('createLink', u); };
+$('#docTable').onclick=()=>{
+  const v=prompt('Table size (rows x columns)', '3x3'); if(!v) return;
+  const m=v.match(/(\d+)\s*[x×*,]\s*(\d+)/i); if(!m) return toast('Use a format like 3x4');
+  const R=Math.min(+m[1],60), C=Math.min(+m[2],20);
+  let h='<table style="border-collapse:collapse;width:100%">';
+  for(let r=0;r<R;r++){ h+='<tr>'; for(let c=0;c<C;c++) h+='<td style="border:1px solid #999;padding:4px 6px">'+(r===0?'<b>&nbsp;</b>':'&nbsp;')+'</td>'; h+='</tr>'; }
+  exec('insertHTML', h+'</table><p><br></p>');
+};
+function shrinkImage(file, max){
+  return new Promise((res, rej)=>{
+    const img=new Image(), u=URL.createObjectURL(file);
+    img.onload=()=>{ const s=Math.min(1, max/img.width); const cv=document.createElement('canvas');
+      cv.width=Math.round(img.width*s); cv.height=Math.round(img.height*s);
+      const g=cv.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,cv.width,cv.height); g.drawImage(img,0,0,cv.width,cv.height);
+      URL.revokeObjectURL(u); res(cv.toDataURL('image/jpeg', 0.82)); };
+    img.onerror=rej; img.src=u;
+  });
+}
+$('#docImage').onchange=async e=>{ const f=e.target.files[0]; e.target.value=''; if(!f) return;
+  try{ exec('insertHTML', `<img src="${await shrinkImage(f, 1000)}" style="max-width:100%">`); }catch(err){ toast('Could not insert that image'); } };
+
+$('#docList').onchange=e=>{ flushDoc(); docs.setActive(e.target.value); loadDoc(); };
+$('#docNew').onclick=()=>{ const n=prompt('Document name', 'Untitled'); if(n===null) return; flushDoc(); docs.create(n.trim()||'Untitled'); loadDoc(); editor.focus(); };
+$('#docRename').onclick=()=>{ const n=prompt('Rename document', docs.cur().name); if(n && n.trim()){ docs.rename(n.trim()); docs.fill($('#docList')); } };
+$('#docDelete').onclick=()=>{ if(!confirm(`Delete "${docs.cur().name}"? This cannot be undone.`)) return; clearTimeout(docTimer); docTimer=null; docs.remove(); loadDoc(); };
+$('#docOpen').onchange=async e=>{
+  const f=e.target.files[0]; e.target.value=''; if(!f) return;
+  if(!window.mammoth) return toast('Word import library did not load – check your internet');
+  try{ flushDoc(); const r=await mammoth.convertToHtml({arrayBuffer: await f.arrayBuffer()});
+    docs.create(f.name.replace(/\.docx$/i,''), r.value || '<p><br></p>'); loadDoc(); toast('Opened '+f.name);
+  }catch(err){ console.error(err); toast('Could not open this file'); }
+};
+$('#docExport').onclick=()=>{
+  flushDoc(); const name=safeName(docs.cur().name);
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{font-family:Calibri,Arial,sans-serif;font-size:11pt}table{border-collapse:collapse}td,th{border:1px solid #999;padding:4px}</style></head><body>${editor.innerHTML}</body></html>`;
+  if(window.htmlDocx){ try{ download(htmlDocx.asBlob(html), name+'.docx'); return; }catch(err){ console.error(err); } }
+  download(new Blob(['\ufeff', html], {type:'application/msword'}), name+'.doc');
+  toast('Saved as .doc (Word library did not load)');
+};
+$('#docPdf').onclick=()=>{ flushDoc(); toast('Choose "Save as PDF" in the print dialog'); setTimeout(()=>window.print(), 300); };
+
+/* ================================================================
+   SHEETS – formula engine
+   ================================================================ */
+// ENGINE START
+const K=(r,c)=>r+','+c;
+const ERR=e=>({err:e});
+const isErr=x=>x!==null && typeof x==='object' && 'err' in x;
+const xl=code=>({xl:code});
+let calcCache=new Map(), calcBusy=new Set(), calcSheet=null;
+const astCache=new Map();
+
+function colName(c){ let s=''; c++; while(c>0){ const m=(c-1)%26; s=String.fromCharCode(65+m)+s; c=Math.floor((c-1)/26); } return s; }
+function colIndex(s){ let n=0; for(const ch of s.toUpperCase()) n=n*26+(ch.charCodeAt(0)-64); return n-1; }
+function dateSerial(y,m,d){ return (Date.UTC(y,m-1,d)-Date.UTC(1899,11,30))/86400000; }
+function serialToDate(n){ const d=new Date(Date.UTC(1899,11,30)+Math.round(n*86400000)); return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'}); }
+function parseDateText(t){
+  let m=t.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/); if(m) return validDate(+m[1],+m[2],+m[3]);
+  m=t.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/); if(m) return validDate(+m[3],+m[2],+m[1]);   // day/month/year
+  return null;
+}
+function validDate(y,m,d){ if(m<1||m>12||d<1||d>31) return null; return dateSerial(y,m,d); }
+
+/* Turn typed text into a number / boolean / date / text */
+function literal(s){
+  s=String(s); const t=s.trim();
+  if(/^[-+]?(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?$/.test(t)) return parseFloat(t);
+  if(/^[-+]?\d{1,3}(,\d{3})+(\.\d+)?$/.test(t)) return parseFloat(t.replace(/,/g,''));
+  if(/^[-+]?\d+(\.\d+)?%$/.test(t)) return parseFloat(t)/100;
+  const dt=parseDateText(t); if(dt!==null) return dt;
+  const u=t.toUpperCase(); if(u==='TRUE') return true; if(u==='FALSE') return false;
+  return s;
+}
+
+function recalcSheet(s){ calcCache=new Map(); calcBusy=new Set(); calcSheet=s; }
+/* Computed value of a cell */
+function val(r,c){
+  const k=K(r,c); if(calcCache.has(k)) return calcCache.get(k);
+  const x=calcSheet.cells[k]; let v;
+  if(!x || x.v==null || x.v==='') v=null;
+  else if(typeof x.v==='string' && x.v[0]==='=' && x.v.length>1){
+    if(calcBusy.has(k)) return ERR('#CIRC!');
+    calcBusy.add(k);
+    try{ v=evalFormula(x.v.slice(1)); }catch(e){ v=ERR(e && e.xl ? e.xl : '#ERROR!'); }
+    calcBusy.delete(k);
+    if(v && v.range) v=ERR('#VALUE!');
+    if(typeof v==='number' && !isFinite(v)) v=ERR('#NUM!');
+  } else v=literal(x.v);
+  calcCache.set(k, v); return v;
+}
+
+function tokenize(src){
+  const toks=[]; let i=0, m;
+  while(i<src.length){
+    const ch=src[i];
+    if(/\s/.test(ch)){ i++; continue; }
+    const rest=src.slice(i);
+    if(ch==='"'){
+      let j=i+1, s='';
+      while(j<src.length){ if(src[j]==='"'){ if(src[j+1]==='"'){ s+='"'; j+=2; continue; } break; } s+=src[j++]; }
+      if(j>=src.length) throw xl('#ERROR!');
+      toks.push({t:'str', v:s, s:i, e:j+1}); i=j+1; continue;
+    }
+    if(rest.startsWith('#REF!')){ toks.push({t:'referr', s:i, e:i+5}); i+=5; continue; }
+    if((m=rest.match(/^(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?/))){ toks.push({t:'num', v:parseFloat(m[0]), s:i, e:i+m[0].length}); i+=m[0].length; continue; }
+    if((m=rest.match(/^(\$?)([A-Za-z]{1,3})(\$?)(\d+)(?![A-Za-z0-9_(])/))){
+      toks.push({t:'ref', ca:m[1], col:colIndex(m[2]), ra:m[3], row:+m[4]-1, s:i, e:i+m[0].length}); i+=m[0].length; continue;
+    }
+    if((m=rest.match(/^[A-Za-z_][A-Za-z0-9_.]*/))){ toks.push({t:'id', v:m[0].toUpperCase(), s:i, e:i+m[0].length}); i+=m[0].length; continue; }
+    if((m=rest.match(/^(<=|>=|<>|[-+*/^&=<>(),;:%])/))){ toks.push({t:'op', v:m[0]===';'?',':m[0], s:i, e:i+m[0].length}); i+=m[0].length; continue; }
+    throw xl('#ERROR!');
+  }
+  return toks;
+}
+
+function parse(toks){
+  let p=0;
+  const isOp=v=>toks[p] && toks[p].t==='op' && toks[p].v===v;
+  const take=v=>{ if(!isOp(v)) throw xl('#ERROR!'); p++; };
+  const CMP=['=','<>','<','>','<=','>='];
+  function cmp(){ let a=cat(); while(toks[p] && toks[p].t==='op' && CMP.includes(toks[p].v)){ const op=toks[p++].v; a={t:'bin',op,a,b:cat()}; } return a; }
+  function cat(){ let a=add(); while(isOp('&')){ p++; a={t:'bin',op:'&',a,b:add()}; } return a; }
+  function add(){ let a=mul(); while(isOp('+')||isOp('-')){ const op=toks[p++].v; a={t:'bin',op,a,b:mul()}; } return a; }
+  function mul(){ let a=pow(); while(isOp('*')||isOp('/')){ const op=toks[p++].v; a={t:'bin',op,a,b:pow()}; } return a; }
+  function pow(){ let a=una(); while(isOp('^')){ p++; a={t:'bin',op:'^',a,b:una()}; } return a; }
+  function una(){ if(isOp('-')){ p++; return {t:'neg',a:una()}; } if(isOp('+')){ p++; return una(); } return post(); }
+  function post(){ let a=prim(); while(isOp('%')){ p++; a={t:'pct',a}; } return a; }
+  function prim(){
+    const k=toks[p]; if(!k) throw xl('#ERROR!');
+    if(k.t==='num' || k.t==='str'){ p++; return {t:'lit', v:k.v}; }
+    if(k.t==='referr'){ p++; return {t:'lit', v:ERR('#REF!')}; }
+    if(k.t==='ref'){
+      p++;
+      if(isOp(':') && toks[p+1] && toks[p+1].t==='ref'){ const k2=toks[p+1]; p+=2;
+        return {t:'range', r1:Math.min(k.row,k2.row), c1:Math.min(k.col,k2.col), r2:Math.max(k.row,k2.row), c2:Math.max(k.col,k2.col)}; }
+      return {t:'ref', r:k.row, c:k.col};
+    }
+    if(k.t==='id'){
+      p++;
+      if(isOp('(')){ p++; const args=[]; if(!isOp(')')){ args.push(cmp()); while(isOp(',')){ p++; args.push(cmp()); } } take(')'); return {t:'fn', name:k.v, args}; }
+      if(k.v==='TRUE') return {t:'lit', v:true};
+      if(k.v==='FALSE') return {t:'lit', v:false};
+      throw xl('#NAME?');
+    }
+    if(isOp('(')){ p++; const a=cmp(); take(')'); return a; }
+    throw xl('#ERROR!');
+  }
+  const ast=cmp(); if(p<toks.length) throw xl('#ERROR!'); return ast;
+}
+
+function evalFormula(src){ let ast=astCache.get(src); if(!ast){ ast=parse(tokenize(src)); astCache.set(src, ast); } return ev(ast); }
+function ev(n){
+  switch(n.t){
+    case 'lit': return n.v;
+    case 'ref': return (n.r<0 || n.c<0) ? ERR('#REF!') : val(n.r, n.c);
+    case 'range': return {range:n};
+    case 'neg': { const x=num(ev1(n.a)); return isErr(x) ? x : -x; }
+    case 'pct': { const x=num(ev1(n.a)); return isErr(x) ? x : x/100; }
+    case 'bin': return bin(n.op, ev1(n.a), ev1(n.b));
+    case 'fn': { const f=FN[n.name]; return f ? f(n.args) : ERR('#NAME?'); }
+  }
+  throw xl('#ERROR!');
+}
+function ev1(n){ const x=ev(n); return x && x.range ? ERR('#VALUE!') : x; }
+function num(x){ if(isErr(x)) return x; if(x==null) return 0; if(typeof x==='number') return x; if(typeof x==='boolean') return x?1:0; const l=literal(x); return typeof l==='number' ? l : ERR('#VALUE!'); }
+function str(x){ if(x==null) return ''; if(typeof x==='boolean') return x?'TRUE':'FALSE'; if(typeof x==='number') return fmtGeneral(x); if(isErr(x)) return x.err; return String(x); }
+function truthy(v){ if(isErr(v)) return v; if(v==null) return false; if(typeof v==='boolean') return v; if(typeof v==='number') return v!==0; const u=String(v).toUpperCase(); if(u==='TRUE') return true; if(u==='FALSE') return false; return ERR('#VALUE!'); }
+function compare(a,b){
+  if(a==null) a = typeof b==='string' ? '' : 0;
+  if(b==null) b = typeof a==='string' ? '' : 0;
+  const rank=v=>typeof v==='number'?0:typeof v==='string'?1:2;
+  if(rank(a)!==rank(b)) return rank(a)-rank(b);
+  if(typeof a==='number') return a-b;
+  if(typeof a==='boolean') return (a?1:0)-(b?1:0);
+  const s=a.toLowerCase(), t=b.toLowerCase(); return s<t?-1:s>t?1:0;
+}
+function cmpOp(op,d){ return {'=':d===0,'<>':d!==0,'<':d<0,'>':d>0,'<=':d<=0,'>=':d>=0}[op]; }
+function bin(op,a,b){
+  if(isErr(a)) return a; if(isErr(b)) return b;
+  if(op==='&') return str(a)+str(b);
+  if(['=','<>','<','>','<=','>='].includes(op)) return cmpOp(op, compare(a,b));
+  const x=num(a), y=num(b); if(isErr(x)) return x; if(isErr(y)) return y;
+  switch(op){
+    case '+': return x+y; case '-': return x-y; case '*': return x*y;
+    case '/': return y===0 ? ERR('#DIV/0!') : x/y;
+    case '^': { const r=Math.pow(x,y); return isFinite(r) ? r : ERR('#NUM!'); }
+  }
+}
+/* Expand arguments (ranges become many values) */
+function flat(args){
+  const out=[];
+  for(const a of args){
+    const x=ev(a);
+    if(x && x.range){ const g=x.range; for(let r=g.r1;r<=g.r2;r++) for(let c=g.c1;c<=g.c2;c++) out.push({v:val(r,c), ref:true}); }
+    else out.push({v:x, ref:a.t==='ref'});
+  }
+  return out;
+}
+function nums(args){
+  const out=[];
+  for(const {v,ref} of flat(args)){
+    if(isErr(v)) return v;
+    if(typeof v==='number') out.push(v);
+    else if(!ref && v!=null){ const n=num(v); if(isErr(n)) return n; out.push(n); }
+  }
+  return out;
+}
+function rangeOf(n){
+  if(n.t==='range') return {r1:n.r1, c1:n.c1, h:n.r2-n.r1+1, w:n.c2-n.c1+1};
+  if(n.t==='ref') return {r1:n.r, c1:n.c, h:1, w:1};
+  throw xl('#VALUE!');
+}
+function eachCell(R, fn){ for(let i=0;i<R.h;i++) for(let j=0;j<R.w;j++) fn(R.r1+i, R.c1+j, i, j); }
+function makeCrit(c){
+  if(isErr(c)) throw xl(c.err);
+  if(typeof c!=='string') return v=>v!=null && compare(v,c)===0;
+  const m=c.match(/^(<=|>=|<>|=|<|>)?([\s\S]*)$/); const op=m[1]||'=', t=m[2];
+  const target=literal(t);
+  const re=(typeof target==='string' && /[*?]/.test(target)) ? new RegExp('^'+target.replace(/[.+^${}()|[\]\\]/g,'\\$&').replace(/\*/g,'.*').replace(/\?/g,'.')+'$','i') : null;
+  return v=>{
+    if(isErr(v)) return false;
+    if(t===''){ const empty=v==null||v===''; return op==='<>' ? !empty : op==='=' ? empty : false; }
+    if(re){ const ok=v!=null && re.test(str(v)); return op==='<>' ? !ok : op==='=' ? ok : false; }
+    if(v==null || typeof v!==typeof target) return op==='<>';
+    return cmpOp(op, compare(v,target));
+  };
+}
+function numArg(n){ const x=num(ev1(n)); if(isErr(x)) throw xl(x.err); return x; }
+const sumOf=n=>n.reduce((s,x)=>s+x,0);
+const FN={
+  SUM:a=>{ const n=nums(a); return isErr(n)?n:sumOf(n); },
+  AVERAGE:a=>{ const n=nums(a); if(isErr(n)) return n; return n.length ? sumOf(n)/n.length : ERR('#DIV/0!'); },
+  MIN:a=>{ const n=nums(a); return isErr(n)?n:(n.length?Math.min(...n):0); },
+  MAX:a=>{ const n=nums(a); return isErr(n)?n:(n.length?Math.max(...n):0); },
+  COUNT:a=>flat(a).filter(x=>typeof x.v==='number').length,
+  COUNTA:a=>flat(a).filter(x=>x.v!=null && x.v!=='').length,
+  COUNTBLANK:a=>flat(a).filter(x=>x.v==null || x.v==='').length,
+  IF:a=>{ if(a.length<2) throw xl('#ERROR!'); const b=truthy(ev1(a[0])); if(isErr(b)) return b; return b ? ev1(a[1]) : (a[2] ? ev1(a[2]) : false); },
+  IFERROR:a=>{ const v=ev1(a[0]); return isErr(v) ? ev1(a[1]) : v; },
+  AND:a=>{ let r=true; for(const {v,ref} of flat(a)){ if(ref && (v==null || typeof v==='string')) continue; const b=truthy(v); if(isErr(b)) return b; r=r&&b; } return r; },
+  OR:a=>{ let r=false; for(const {v,ref} of flat(a)){ if(ref && (v==null || typeof v==='string')) continue; const b=truthy(v); if(isErr(b)) return b; r=r||b; } return r; },
+  NOT:a=>{ const b=truthy(ev1(a[0])); return isErr(b) ? b : !b; },
+  ROUND:a=>{ const x=numArg(a[0]), d=a[1]?numArg(a[1]):0, f=Math.pow(10,d); return Math.sign(x)*Math.round(Math.abs(x)*f+1e-9)/f; },
+  ROUNDUP:a=>{ const x=numArg(a[0]), d=a[1]?numArg(a[1]):0, f=Math.pow(10,d); return Math.sign(x)*Math.ceil(Math.abs(x)*f-1e-9)/f; },
+  ROUNDDOWN:a=>{ const x=numArg(a[0]), d=a[1]?numArg(a[1]):0, f=Math.pow(10,d); return Math.sign(x)*Math.floor(Math.abs(x)*f+1e-9)/f; },
+  ABS:a=>Math.abs(numArg(a[0])),
+  INT:a=>Math.floor(numArg(a[0])),
+  SQRT:a=>{ const x=numArg(a[0]); return x<0 ? ERR('#NUM!') : Math.sqrt(x); },
+  POWER:a=>bin('^', ev1(a[0]), ev1(a[1])),
+  MOD:a=>{ const x=numArg(a[0]), y=numArg(a[1]); return y===0 ? ERR('#DIV/0!') : x-y*Math.floor(x/y); },
+  SUMIF:a=>{ const R=rangeOf(a[0]), p=makeCrit(ev1(a[1])), S=a[2]?rangeOf(a[2]):R; let s=0;
+    eachCell(R,(r,c,i,j)=>{ if(p(val(r,c))){ const v=val(S.r1+i,S.c1+j); if(typeof v==='number') s+=v; } }); return s; },
+  COUNTIF:a=>{ const R=rangeOf(a[0]), p=makeCrit(ev1(a[1])); let n=0; eachCell(R,(r,c)=>{ if(p(val(r,c))) n++; }); return n; },
+  AVERAGEIF:a=>{ const R=rangeOf(a[0]), p=makeCrit(ev1(a[1])), S=a[2]?rangeOf(a[2]):R; let s=0,n=0;
+    eachCell(R,(r,c,i,j)=>{ if(p(val(r,c))){ const v=val(S.r1+i,S.c1+j); if(typeof v==='number'){ s+=v; n++; } } }); return n ? s/n : ERR('#DIV/0!'); },
+  VLOOKUP:a=>{
+    const x=ev1(a[0]); if(isErr(x)) return x;
+    const R=rangeOf(a[1]), ci=numArg(a[2]); if(ci<1 || ci>R.w) return ERR('#REF!');
+    const approx=a[3] ? truthy(ev1(a[3])) : true; if(isErr(approx)) return approx;
+    let hit=-1;
+    for(let i=0;i<R.h;i++){
+      const v=val(R.r1+i, R.c1);
+      if(v==null) continue;
+      if(approx){ if(typeof v===typeof x){ if(compare(v,x)<=0) hit=i; else break; } }
+      else if(compare(v,x)===0){ hit=i; break; }
+    }
+    return hit<0 ? ERR('#N/A') : val(R.r1+hit, R.c1+ci-1);
+  },
+  CONCAT:a=>flat(a).map(x=>str(x.v)).join(''),
+  CONCATENATE:a=>flat(a).map(x=>str(x.v)).join(''),
+  LEN:a=>str(ev1(a[0])).length,
+  UPPER:a=>str(ev1(a[0])).toUpperCase(),
+  LOWER:a=>str(ev1(a[0])).toLowerCase(),
+  TRIM:a=>str(ev1(a[0])).trim().replace(/\s+/g,' '),
+  LEFT:a=>str(ev1(a[0])).slice(0, a[1]?numArg(a[1]):1),
+  RIGHT:a=>{ const s=str(ev1(a[0])), n=a[1]?numArg(a[1]):1; return n<=0 ? '' : s.slice(-n); },
+  TODAY:()=>{ const d=new Date(); return dateSerial(d.getFullYear(), d.getMonth()+1, d.getDate()); },
+  NOW:()=>{ const d=new Date(); return dateSerial(d.getFullYear(), d.getMonth()+1, d.getDate()) + (d.getHours()*3600+d.getMinutes()*60+d.getSeconds())/86400; },
+};
+
+function fmtGeneral(x){
+  if(Number.isInteger(x)) return String(x);
+  const a=Math.abs(x); if(a!==0 && (a<1e-9 || a>=1e15)) return x.toExponential(4);
+  return String(parseFloat(x.toPrecision(11)));
+}
+function display(v, fmt){
+  if(v==null) return '';
+  if(isErr(v)) return v.err;
+  if(typeof v==='boolean') return v?'TRUE':'FALSE';
+  if(typeof v==='number'){
+    const two={minimumFractionDigits:2, maximumFractionDigits:2};
+    switch(fmt){
+      case 'num2': return v.toLocaleString('en-US', two);
+      case 'int': return Math.round(v).toLocaleString('en-US');
+      case 'cur': return (v<0?'-':'')+'SAR '+Math.abs(v).toLocaleString('en-US', two);
+      case 'pct': return (v*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%';
+      case 'date': return serialToDate(v);
+      default: return fmtGeneral(v);
+    }
+  }
+  return String(v);
+}
+
+/* Shift references when rows/columns are inserted or deleted */
+function adjustFormula(src, axis, at, delta){
+  if(typeof src!=='string' || src[0]!=='=') return src;
+  const body=src.slice(1); let toks; try{ toks=tokenize(body); }catch(e){ return src; }
+  let out='', last=0;
+  for(let i=0;i<toks.length;i++){
+    const t=toks[i]; if(t.t!=='ref') continue;
+    const isColon=k=>toks[k] && toks[k].t==='op' && toks[k].v===':';
+    const role = (isColon(i+1) && toks[i+2] && toks[i+2].t==='ref') ? 'start' : (isColon(i-1) && toks[i-2] && toks[i-2].t==='ref') ? 'end' : 'single';
+    const pos=x=>axis==='r' ? x.row : x.col;
+    const p=pos(t); let np=p, bad=false;
+    if(delta>0){ if(p>=at) np=p+1; }
+    else if(p>at) np=p-1;
+    else if(p===at){
+      if(role==='single') bad=true;
+      else if(role==='end'){ const o=pos(toks[i-2]); if(o<at) np=p-1; else if(o===at) bad=true; }
+      else { const o=pos(toks[i+2]); if(o===at) bad=true; }
+    }
+    const row=axis==='r'?np:t.row, col=axis==='c'?np:t.col;
+    out+=body.slice(last, t.s)+(bad ? '#REF!' : t.ca+colName(col)+t.ra+(row+1)); last=t.e;
+  }
+  return '='+out+body.slice(last);
+}
+/* Move relative references (used by paste and sort, like Excel) */
+function offsetFormula(src, dr, dc){
+  if(typeof src!=='string' || src[0]!=='=' || (!dr && !dc)) return src;
+  const body=src.slice(1); let toks; try{ toks=tokenize(body); }catch(e){ return src; }
+  let out='', last=0;
+  for(const t of toks){
+    if(t.t!=='ref') continue;
+    const row=t.ra ? t.row : t.row+dr, col=t.ca ? t.col : t.col+dc;
+    out+=body.slice(last, t.s)+((row<0||col<0) ? '#REF!' : t.ca+colName(col)+t.ra+(row+1)); last=t.e;
+  }
+  return '='+out+body.slice(last);
+}
+// ENGINE END
+
+/* ================================================================
+   SHEETS – app
+   ================================================================ */
+const MAX_ROWS=5000, MAX_COLS=100;
+const newSheet=name=>({name, rows:100, cols:26, cells:{}, freeze:false});
+const books=new FileSet('azh.book', ()=>({sheets:[newSheet('Sheet1')], active:0}));
+const grid=$('#grid'), wrap=$('#gridWrap'), ed=$('#cellEditor'), fbar=$('#fbar');
+let book, act={r:0,c:0}, ext={r:0,c:0}, editing=null, undoStack=[], redoStack=[], bookTimer=null, clip=null, lastPointer='mouse', dragging=false, fbarCell=null;
+
+const sh=()=>book.sheets[book.active];
+const recalc=()=>recalcSheet(sh());
+const cellObj=(r,c)=>sh().cells[K(r,c)];
+const raw=(r,c)=>{ const x=cellObj(r,c); return x && x.v!=null ? String(x.v) : ''; };
+const norm=()=>({r1:Math.min(act.r,ext.r), c1:Math.min(act.c,ext.c), r2:Math.max(act.r,ext.r), c2:Math.max(act.c,ext.c)});
+const tdAt=(r,c)=>grid.tBodies[0]?.rows[r]?.cells[c+1];
+const clampP=p=>({r:Math.max(0,Math.min(sh().rows-1,p.r)), c:Math.max(0,Math.min(sh().cols-1,p.c))});
+
+function loadBook(){
+  book=books.load();
+  if(!book || !Array.isArray(book.sheets) || !book.sheets.length) book={sheets:[newSheet('Sheet1')], active:0};
+  if(!(book.active>=0 && book.active<book.sheets.length)) book.active=0;
+  undoStack=[]; redoStack=[]; act={r:0,c:0}; ext={r:0,c:0};
+  books.fill($('#bookList')); renderGrid();
+}
+function saveBook(){ clearTimeout(bookTimer); bookTimer=setTimeout(()=>{ bookTimer=null; if(!books.save(book)) toast('Storage full – use Save .xlsx or Backup'); }, 300); }
+function flushBook(){ if(bookTimer){ clearTimeout(bookTimer); bookTimer=null; books.save(book); } }
+function pushUndo(){ undoStack.push(JSON.stringify(book)); if(undoStack.length>40) undoStack.shift(); redoStack=[]; }
+function undo(){ if(!undoStack.length) return toast('Nothing to undo'); redoStack.push(JSON.stringify(book)); book=JSON.parse(undoStack.pop()); afterChange(); }
+function redo(){ if(!redoStack.length) return; undoStack.push(JSON.stringify(book)); book=JSON.parse(redoStack.pop()); afterChange(); }
+function afterChange(){ act=clampP(act); ext=clampP(ext); saveBook(); renderGrid(); }
+
+function cleanCell(k){
+  const cells=sh().cells, x=cells[k]; if(!x) return;
+  if(x.s){ for(const p in x.s) if(x.s[p]===undefined || x.s[p]===false || x.s[p]==='') delete x.s[p]; if(!Object.keys(x.s).length) delete x.s; }
+  if((x.v==null || x.v==='') && !x.s) delete cells[k];
+}
+function setCell(r,c,v){
+  const s=sh(), k=K(r,c), x=s.cells[k] || {v:''};
+  x.v=v; s.cells[k]=x;
+  if(typeof v==='string' && !(x.s && x.s.fmt)){
+    const t=v.trim(); let f=null;
+    if(/^[-+]?\d+(\.\d+)?%$/.test(t)) f='pct';
+    else if(parseDateText(t)!==null) f='date';
+    else if(/^=.*\b(TODAY|NOW)\s*\(/i.test(t)) f='date';
+    if(f){ x.s=x.s||{}; x.s.fmt=f; }
+  }
+  cleanCell(k);
+}
+
+function renderGrid(){
+  const s=sh(); recalc();
+  grid.style.width=(46+100*s.cols)+'px';
+  let h='<thead><tr><th class="corner" title="Select all"></th>';
+  for(let c=0;c<s.cols;c++) h+=`<th class="colh" data-c="${c}">${colName(c)}</th>`;
+  h+='</tr></thead><tbody>';
+  const f=s.filter;
+  for(let r=0;r<s.rows;r++){
+    let hide=false;
+    if(f && !(s.freeze && r===0)){ const fx=s.cells[K(r,f.c)]; hide=!display(val(r,f.c), fx && fx.s && fx.s.fmt).toLowerCase().includes(f.text.toLowerCase()); }
+    h+=`<tr${hide?' hidden':''}${r===0&&s.freeze?' class="frozen"':''}><th class="rowh" data-r="${r}">${r+1}</th>`;
+    for(let c=0;c<s.cols;c++){
+      const x=s.cells[K(r,c)];
+      if(!x){ h+='<td></td>'; continue; }
+      const st=x.s||{}, v=val(r,c);
+      const cls=typeof v==='number'?'n':isErr(v)?'e':typeof v==='boolean'?'b':'';
+      let style='';
+      if(st.b) style+='font-weight:700;'; if(st.i) style+='font-style:italic;'; if(st.u) style+='text-decoration:underline;';
+      if(st.color) style+=`color:${st.color};`; if(st.bg) style+=`background-color:${st.bg};`; if(st.align) style+=`text-align:${st.align};`;
+      h+=`<td${cls?` class="${cls}"`:''}${style?` style="${style}"`:''}>${esc(display(v, st.fmt))}</td>`;
+    }
+    h+='</tr>';
+  }
+  grid.innerHTML=h+'</tbody>';
+  $('#sheetTabs').innerHTML=book.sheets.map((x,i)=>`<button class="stab${i===book.active?' active':''}" data-i="${i}">${esc(x.name)}</button>`).join('');
+  $('#sFilter').textContent = s.filter ? `Clear filter (${colName(s.filter.c)})` : 'Filter';
+  $('#sFilter').classList.toggle('on', !!s.filter);
+  $('#sFreeze').classList.toggle('on', !!s.freeze);
+  selChanged(false);
+}
+
+function paintSel(){
+  grid.querySelectorAll('.sel,.cur,.hsel').forEach(e=>e.classList.remove('sel','cur','hsel'));
+  const b=grid.tBodies[0]; if(!b) return;
+  const {r1,c1,r2,c2}=norm();
+  for(let r=r1;r<=r2;r++){ const tr=b.rows[r]; if(!tr) continue; tr.cells[0].classList.add('hsel'); for(let c=c1;c<=c2;c++) tr.cells[c+1]?.classList.add('sel'); }
+  tdAt(act.r,act.c)?.classList.add('cur');
+  const hr=grid.tHead.rows[0]; for(let c=c1;c<=c2;c++) hr.cells[c+1]?.classList.add('hsel');
+}
+function selChanged(scroll=true){
+  paintSel();
+  const {r1,c1,r2,c2}=norm();
+  $('#cellName').textContent = (r1===r2 && c1===c2) ? colName(c1)+(r1+1) : `${colName(c1)}${r1+1}:${colName(c2)}${r2+1}`;
+  if(document.activeElement!==fbar) fbar.value=raw(act.r,act.c);
+  const x=cellObj(act.r,act.c), st=(x && x.s) || {};
+  $('#sFmt').value=st.fmt||'gen';
+  $('#sBold').classList.toggle('on',!!st.b); $('#sItal').classList.toggle('on',!!st.i); $('#sUnder').classList.toggle('on',!!st.u);
+  updateStatus();
+  if(scroll){ const td=(ext.r!==act.r||ext.c!==act.c) ? tdAt(ext.r,ext.c) : tdAt(act.r,act.c); td?.scrollIntoView({block:'nearest', inline:'nearest'}); }
+}
+function updateStatus(){
+  const {r1,c1,r2,c2}=norm(); const n=(r2-r1+1)*(c2-c1+1); let txt='';
+  if(n>1 && n<=200000){
+    let sum=0, cnt=0, all=0;
+    for(let r=r1;r<=r2;r++) for(let c=c1;c<=c2;c++){ if(!sh().cells[K(r,c)]) continue; const v=val(r,c); if(v!=null && v!=='') all++; if(typeof v==='number'){ sum+=v; cnt++; } }
+    txt=`Sum: ${fmtGeneral(sum)}   Average: ${cnt?fmtGeneral(sum/cnt):'–'}   Count: ${all}`;
+  }
+  $('#sStatus').textContent = txt || `${books.cur().name} › ${sh().name}`;
+}
+function isHidden(r){ return !!grid.tBodies[0]?.rows[r]?.hidden; }
+function move(dr,dc){
+  let r=act.r+dr, c=act.c+dc; const s=sh();
+  while(dr && r>=0 && r<s.rows && isHidden(r)) r+=dr;
+  act=clampP({r,c}); ext={...act}; selChanged();
+}
+
+/* --- Editing --- */
+function startEdit(initial){
+  const td=tdAt(act.r,act.c); if(!td) return;
+  editing={r:act.r, c:act.c};
+  const wr=wrap.getBoundingClientRect(), tr=td.getBoundingClientRect();
+  Object.assign(ed.style, {left:(tr.left-wr.left+wrap.scrollLeft)+'px', top:(tr.top-wr.top+wrap.scrollTop)+'px', width:Math.max(tr.width,140)+'px', height:tr.height+'px'});
+  ed.value = initial!==undefined ? initial : raw(act.r,act.c);
+  ed.hidden=false; ed.focus(); const n=ed.value.length; ed.setSelectionRange(n,n);
+  fbar.value=ed.value;
+}
+function commitEdit(dr=0, dc=0, doMove=true){
+  if(!editing) return;
+  const {r,c}=editing, v=ed.value; editing=null; ed.hidden=true;
+  if(v!==raw(r,c)){ pushUndo(); setCell(r,c,v); afterChange(); }
+  if(doMove){ move(dr,dc); wrap.focus({preventScroll:true}); }
+}
+function cancelEdit(){ editing=null; ed.hidden=true; fbar.value=raw(act.r,act.c); wrap.focus({preventScroll:true}); }
+ed.addEventListener('keydown', e=>{
+  if(e.key==='Enter'){ e.preventDefault(); commitEdit(e.shiftKey?-1:1, 0); }
+  else if(e.key==='Tab'){ e.preventDefault(); commitEdit(0, e.shiftKey?-1:1); }
+  else if(e.key==='Escape'){ e.preventDefault(); cancelEdit(); }
+});
+ed.addEventListener('input', ()=>{ fbar.value=ed.value; });
+ed.addEventListener('blur', ()=>commitEdit(0,0,false));
+
+fbar.addEventListener('focus', ()=>{ commitEdit(0,0,false); fbarCell={...act}; });
+function commitFbar(){ if(!fbarCell) return; const {r,c}=fbarCell; if(fbar.value!==raw(r,c)){ pushUndo(); setCell(r,c,fbar.value); afterChange(); } }
+fbar.addEventListener('keydown', e=>{
+  if(e.key==='Enter'){ e.preventDefault(); commitFbar(); fbarCell=null; move(1,0); wrap.focus({preventScroll:true}); }
+  else if(e.key==='Escape'){ e.preventDefault(); fbarCell=null; fbar.value=raw(act.r,act.c); wrap.focus({preventScroll:true}); }
+});
+fbar.addEventListener('blur', ()=>{ commitFbar(); fbarCell=null; });
+
+/* --- Mouse / touch selection --- */
+function cellFromTd(td){ return {r:td.parentElement.sectionRowIndex, c:td.cellIndex-1}; }
+grid.addEventListener('pointerdown', e=>{
+  lastPointer=e.pointerType;
+  if(e.pointerType!=='mouse' || e.button!==0) return;
+  const td=e.target.closest('td'); if(!td) return;
+  const p=cellFromTd(td);
+  commitEdit(0,0,false);
+  if(e.shiftKey) ext=p; else { act=p; ext={...p}; }
+  dragging=true; selChanged(false); wrap.focus({preventScroll:true});
+  e.preventDefault();
+});
+grid.addEventListener('pointerover', e=>{ if(!dragging) return; const td=e.target.closest('td'); if(!td) return; ext=cellFromTd(td); selChanged(false); });
+window.addEventListener('pointerup', ()=>{ dragging=false; });
+grid.addEventListener('click', e=>{
+  const th=e.target.closest('th'), td=e.target.closest('td'), s=sh();
+  if(th){
+    commitEdit(0,0,false);
+    if(th.classList.contains('corner')){ act={r:0,c:0}; ext={r:s.rows-1,c:s.cols-1}; }
+    else if(th.classList.contains('colh')){ const c=+th.dataset.c; act={r:0,c}; ext={r:s.rows-1,c}; }
+    else if(th.classList.contains('rowh')){ const r=+th.dataset.r; act={r,c:0}; ext={r,c:s.cols-1}; }
+    selChanged(false); wrap.focus({preventScroll:true}); return;
+  }
+  if(td && lastPointer!=='mouse'){        // touch: tap selects, tap again edits
+    const p=cellFromTd(td);
+    if(act.r===p.r && act.c===p.c && ext.r===p.r && ext.c===p.c) startEdit();
+    else { commitEdit(0,0,false); act=p; ext={...p}; selChanged(false); }
+  }
+});
+grid.addEventListener('dblclick', e=>{ if(e.target.closest('td') && lastPointer==='mouse') startEdit(); });
+
+/* --- Keyboard --- */
+wrap.addEventListener('keydown', e=>{
+  if(editing || e.target!==wrap) return;
+  const k=e.key, mod=e.ctrlKey||e.metaKey;
+  if(mod){
+    const l=k.toLowerCase();
+    if(l==='z'){ e.preventDefault(); e.shiftKey ? redo() : undo(); }
+    else if(l==='y'){ e.preventDefault(); redo(); }
+    else if(l==='b'){ e.preventDefault(); toggleStyle('b'); }
+    else if(l==='i'){ e.preventDefault(); toggleStyle('i'); }
+    else if(l==='u'){ e.preventDefault(); toggleStyle('u'); }
+    else if(l==='a'){ e.preventDefault(); act={r:0,c:0}; ext={r:sh().rows-1,c:sh().cols-1}; selChanged(false); }
+    return;
+  }
+  const mv={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]}[k];
+  if(mv){ e.preventDefault(); if(e.shiftKey){ ext=clampP({r:ext.r+mv[0], c:ext.c+mv[1]}); selChanged(); } else move(mv[0],mv[1]); return; }
+  if(k==='Enter' || k==='F2'){ e.preventDefault(); startEdit(); return; }
+  if(k==='Tab'){ e.preventDefault(); move(0, e.shiftKey?-1:1); return; }
+  if(k==='Delete' || k==='Backspace'){ e.preventDefault(); clearRange(); return; }
+  if(k.length===1 && !e.altKey){ e.preventDefault(); startEdit(k); }
+});
+function clearRange(){
+  const {r1,c1,r2,c2}=norm(); pushUndo();
+  for(let r=r1;r<=r2;r++) for(let c=c1;c<=c2;c++){ const k=K(r,c), x=sh().cells[k]; if(x){ x.v=''; cleanCell(k); } }
+  afterChange();
+}
+
+/* --- Copy / cut / paste --- */
+const sheetKeysActive=()=>document.body.dataset.app==='sheet' && !editing && document.activeElement===wrap;
+function selTSV(){ const {r1,c1,r2,c2}=norm(); const rows=[]; for(let r=r1;r<=r2;r++){ const row=[]; for(let c=c1;c<=c2;c++) row.push(raw(r,c).replace(/[\t\r\n]+/g,' ')); rows.push(row.join('\t')); } return rows.join('\n'); }
+document.addEventListener('copy', e=>{ if(!sheetKeysActive()) return; const t=selTSV(); const {r1,c1}=norm(); clip={tsv:t, r:r1, c:c1}; e.clipboardData.setData('text/plain', t); e.preventDefault(); });
+document.addEventListener('cut', e=>{ if(!sheetKeysActive()) return; const t=selTSV(); clip=null; e.clipboardData.setData('text/plain', t); e.preventDefault(); clearRange(); });
+document.addEventListener('paste', e=>{
+  if(!sheetKeysActive()) return;
+  const t=e.clipboardData.getData('text/plain'); if(!t) return; e.preventDefault();
+  const rows=t.replace(/\r/g,'').replace(/\n$/,'').split('\n').map(l=>l.split('\t'));
+  const internal=clip && clip.tsv===t, s=sh(), {r1,c1}=norm();
+  pushUndo();
+  rows.forEach((row,i)=>row.forEach((v,j)=>{
+    const r=r1+i, c=c1+j; if(r>=MAX_ROWS || c>=MAX_COLS) return;
+    if(r>=s.rows) s.rows=r+1; if(c>=s.cols) s.cols=c+1;
+    setCell(r, c, internal ? offsetFormula(v, r1-clip.r, c1-clip.c) : v);
+  }));
+  act={r:r1,c:c1}; ext=clampP({r:r1+rows.length-1, c:c1+Math.max(...rows.map(x=>x.length))-1});
+  afterChange();
+});
+
+/* --- Formatting --- */
+function forRange(fn){
+  pushUndo(); const {r1,c1,r2,c2}=norm(), cells=sh().cells;
+  for(let r=r1;r<=r2;r++) for(let c=c1;c<=c2;c++){ const k=K(r,c); const x=cells[k]||{v:''}; x.s=x.s||{}; fn(x.s); cells[k]=x; cleanCell(k); }
+  afterChange();
+}
+function toggleStyle(p){ const x=cellObj(act.r,act.c); const on=!(x && x.s && x.s[p]); forRange(s=>{ if(on) s[p]=true; else delete s[p]; }); }
+const sheetTb=$('#sheetToolbar');
+sheetTb.addEventListener('mousedown', e=>{ if(e.target.closest('button')) e.preventDefault(); });
+$('#sUndo').onclick=undo; $('#sRedo').onclick=redo;
+$('#sBold').onclick=()=>toggleStyle('b'); $('#sItal').onclick=()=>toggleStyle('i'); $('#sUnder').onclick=()=>toggleStyle('u');
+$('#sColor').onchange=e=>forRange(s=>{ s.color=e.target.value; });
+$('#sFill').onchange=e=>forRange(s=>{ s.bg=e.target.value; });
+$$('#sheetToolbar [data-align]').forEach(b=>b.onclick=()=>forRange(s=>{ s.align=b.dataset.align; }));
+$('#sFmt').onchange=e=>{ const f=e.target.value; forRange(s=>{ if(f==='gen') delete s.fmt; else s.fmt=f; }); };
+$('#sClearFmt').onclick=()=>forRange(s=>{ for(const p in s) delete s[p]; });
+
+/* --- Rows & columns --- */
+function shiftStructure(axis, at, delta){
+  const s=sh(), out={};
+  for(const [k,x] of Object.entries(s.cells)){
+    let [r,c]=k.split(',').map(Number); let p=axis==='r'?r:c;
+    if(delta<0 && p===at) continue;
+    if(p>at || (delta>0 && p===at)) p+=delta;
+    if(axis==='r') r=p; else c=p;
+    if(typeof x.v==='string' && x.v[0]==='=') x.v=adjustFormula(x.v, axis, at, delta);
+    out[K(r,c)]=x;
+  }
+  s.cells=out;
+  if(axis==='r') s.rows=Math.max(1, Math.min(MAX_ROWS, s.rows+delta)); else s.cols=Math.max(1, Math.min(MAX_COLS, s.cols+delta));
+  if(s.filter && axis==='c'){ if(delta<0 && s.filter.c===at) delete s.filter; else if(s.filter.c>at || (delta>0 && s.filter.c===at)) s.filter.c+=delta; }
+}
+$('#sAddRow').onclick=()=>{ if(sh().rows>=MAX_ROWS) return toast('Row limit reached'); pushUndo(); shiftStructure('r', norm().r1, 1); afterChange(); };
+$('#sAddCol').onclick=()=>{ if(sh().cols>=MAX_COLS) return toast('Column limit reached'); pushUndo(); shiftStructure('c', norm().c1, 1); afterChange(); };
+$('#sDelRow').onclick=()=>{ const {r1,r2}=norm(); if(r2-r1+1>=sh().rows) return toast('Cannot delete every row'); pushUndo(); for(let r=r2;r>=r1;r--) shiftStructure('r', r, -1); act={r:r1,c:act.c}; ext={...act}; afterChange(); };
+$('#sDelCol').onclick=()=>{ const {c1,c2}=norm(); if(c2-c1+1>=sh().cols) return toast('Cannot delete every column'); pushUndo(); for(let c=c2;c>=c1;c--) shiftStructure('c', c, -1); act={r:act.r,c:c1}; ext={...act}; afterChange(); };
+
+/* --- Sort / filter / freeze --- */
+function lastUsedRow(){ let m=-1; for(const k in sh().cells){ const r=+k.split(',')[0]; if(r>m) m=r; } return m; }
+function sortRows(desc){
+  const s=sh(), {r1,r2,c1}=norm(); let a=r1, b=r2;
+  if(a===b){ a=s.freeze?1:0; b=lastUsedRow(); }
+  if(b<=a) return toast('Nothing to sort');
+  pushUndo(); recalc();
+  const rows=[];
+  for(let r=a;r<=b;r++){ const cells={}; for(let c=0;c<s.cols;c++){ const x=s.cells[K(r,c)]; if(x) cells[c]=x; } rows.push({from:r, key:val(r,c1), cells}); }
+  const empty=v=>v==null || v==='';
+  rows.sort((x,y)=>{
+    const ex=empty(x.key), ey=empty(y.key); if(ex||ey) return ex-ey;
+    if(isErr(x.key)) return 1; if(isErr(y.key)) return -1;
+    const d=compare(x.key, y.key); return desc ? -d : d;
+  });
+  for(let r=a;r<=b;r++) for(let c=0;c<s.cols;c++) delete s.cells[K(r,c)];
+  rows.forEach((row,i)=>{ for(const c in row.cells){ const x=row.cells[c]; if(typeof x.v==='string') x.v=offsetFormula(x.v, a+i-row.from, 0); s.cells[K(a+i,+c)]=x; } });
+  afterChange(); toast(`Sorted rows ${a+1}–${b+1} by column ${colName(c1)}`);
+}
+$('#sSortAsc').onclick=()=>sortRows(false);
+$('#sSortDesc').onclick=()=>sortRows(true);
+$('#sFilter').onclick=()=>{
+  const s=sh();
+  if(s.filter){ delete s.filter; afterChange(); return; }
+  const t=prompt(`Show only rows where column ${colName(act.c)} contains:`); if(!t) return;
+  s.filter={c:act.c, text:t}; afterChange();
+};
+$('#sFreeze').onclick=()=>{ const s=sh(); s.freeze=!s.freeze; afterChange(); };
+
+/* --- Sheet tabs --- */
+$('#sheetTabs').addEventListener('click', e=>{ const b=e.target.closest('.stab'); if(!b) return; commitEdit(0,0,false); book.active=+b.dataset.i; act={r:0,c:0}; ext={r:0,c:0}; afterChange(); });
+$('#sheetTabs').addEventListener('dblclick', e=>{ const b=e.target.closest('.stab'); if(!b) return; const s=book.sheets[+b.dataset.i]; const n=prompt('Rename sheet', s.name); if(n && n.trim()){ pushUndo(); s.name=n.trim().slice(0,31); afterChange(); } });
+$('#addSheet').onclick=()=>{ pushUndo(); let i=book.sheets.length+1; while(book.sheets.some(s=>s.name==='Sheet'+i)) i++; book.sheets.push(newSheet('Sheet'+i)); book.active=book.sheets.length-1; act={r:0,c:0}; ext={r:0,c:0}; afterChange(); };
+$('#delSheet').onclick=()=>{ if(book.sheets.length===1) return toast('A workbook needs at least one sheet'); if(!confirm(`Delete sheet "${sh().name}"?`)) return; pushUndo(); book.sheets.splice(book.active,1); book.active=Math.max(0,book.active-1); act={r:0,c:0}; ext={r:0,c:0}; afterChange(); };
+
+/* --- Workbook files --- */
+$('#bookList').onchange=e=>{ commitEdit(0,0,false); flushBook(); books.setActive(e.target.value); loadBook(); };
+$('#bookNew').onclick=()=>{ const n=prompt('Workbook name', 'Untitled'); if(n===null) return; commitEdit(0,0,false); flushBook(); books.create(n.trim()||'Untitled'); loadBook(); };
+$('#bookRename').onclick=()=>{ const n=prompt('Rename workbook', books.cur().name); if(n && n.trim()){ books.rename(n.trim()); books.fill($('#bookList')); updateStatus(); } };
+$('#bookDelete').onclick=()=>{ if(!confirm(`Delete "${books.cur().name}"? This cannot be undone.`)) return; clearTimeout(bookTimer); bookTimer=null; books.remove(); loadBook(); };
+
+$('#bookOpen').onchange=async e=>{
+  const f=e.target.files[0]; e.target.value=''; if(!f) return;
+  if(!window.XLSX) return toast('Excel library did not load – check your internet');
+  try{
+    const wb=XLSX.read(await f.arrayBuffer(), {type:'array'});
+    const nb={sheets:[], active:0}; let trunc=false;
+    for(const name of wb.SheetNames){
+      const ws=wb.Sheets[name], s=newSheet(name.slice(0,31));
+      if(ws['!ref']){
+        const rg=XLSX.utils.decode_range(ws['!ref']);
+        let maxR=rg.e.r; if(maxR>=MAX_ROWS){ maxR=MAX_ROWS-1; trunc=true; }
+        const maxC=Math.min(rg.e.c, MAX_COLS-1);
+        for(let r=rg.s.r;r<=maxR;r++) for(let c=rg.s.c;c<=maxC;c++){
+          const x=ws[XLSX.utils.encode_cell({r,c})]; if(!x) continue;
+          let v;
+          if(x.f) v='='+x.f;
+          else if(x.t==='b') v=x.v?'TRUE':'FALSE';
+          else if(x.t==='e') v=x.w||'#ERROR!';
+          else v=x.v==null?'':String(x.v);
+          const st={};
+          if(x.t==='n' && x.z && typeof x.z==='string'){
+            if(XLSX.SSF.is_date(x.z)) st.fmt='date';
+            else if(x.z.includes('%')) st.fmt='pct';
+            else if(x.z.includes('0.00')) st.fmt='num2';
+          }
+          if(v==='' && !st.fmt) continue;
+          s.cells[K(r,c)] = st.fmt ? {v, s:st} : {v};
+        }
+        s.rows=Math.min(MAX_ROWS, Math.max(100, maxR+21)); s.cols=Math.min(MAX_COLS, Math.max(26, maxC+3));
+      }
+      nb.sheets.push(s);
+    }
+    if(!nb.sheets.length) nb.sheets.push(newSheet('Sheet1'));
+    commitEdit(0,0,false); flushBook();
+    books.create(f.name.replace(/\.(xlsx|xls|csv)$/i,''), nb); loadBook();
+    toast(trunc ? `Opened – only the first ${MAX_ROWS} rows were loaded` : 'Opened '+f.name);
+  }catch(err){ console.error(err); toast('Could not open this file'); }
+};
+
+const FMT_Z={num2:'#,##0.00', int:'#,##0', cur:'"SAR "#,##0.00', pct:'0.00%', date:'dd-mmm-yyyy'};
+$('#saveXlsx').onclick=()=>{
+  if(!window.XLSX) return toast('Excel library did not load – check your internet');
+  commitEdit(0,0,false); flushBook();
+  const wb=XLSX.utils.book_new(), used=new Set();
+  book.sheets.forEach((s,i)=>{
+    recalcSheet(s);
+    const ws={}; let mr=0, mc=0;
+    for(const [k,x] of Object.entries(s.cells)){
+      if(x.v==null || x.v==='') continue;
+      const [r,c]=k.split(',').map(Number), v=val(r,c), o={};
+      if(typeof x.v==='string' && x.v[0]==='=' && x.v.length>1) o.f=x.v.slice(1);
+      if(typeof v==='number'){ o.t='n'; o.v=v; }
+      else if(typeof v==='boolean'){ o.t='b'; o.v=v; }
+      else { o.t='s'; o.v= v==null ? '' : isErr(v) ? v.err : String(v); }
+      const f=x.s && x.s.fmt; if(f && FMT_Z[f]) o.z=FMT_Z[f];
+      ws[XLSX.utils.encode_cell({r,c})]=o; mr=Math.max(mr,r); mc=Math.max(mc,c);
+    }
+    ws['!ref']=XLSX.utils.encode_range({s:{r:0,c:0}, e:{r:mr,c:mc}});
+    let nm=(s.name.replace(/[\\\/?*\[\]:]/g,'_').slice(0,31)) || 'Sheet'+(i+1);
+    while(used.has(nm.toLowerCase())) nm=nm.slice(0,27)+'_'+i;
+    used.add(nm.toLowerCase());
+    XLSX.utils.book_append_sheet(wb, ws, nm);
+  });
+  recalc();
+  XLSX.writeFile(wb, safeName(books.cur().name)+'.xlsx');
+};
+$('#saveCsv').onclick=()=>{
+  commitEdit(0,0,false); recalc(); const s=sh(); let mr=-1, mc=-1;
+  for(const k in s.cells){ if(s.cells[k].v==null || s.cells[k].v==='') continue; const [r,c]=k.split(',').map(Number); mr=Math.max(mr,r); mc=Math.max(mc,c); }
+  const lines=[];
+  for(let r=0;r<=mr;r++){
+    const row=[];
+    for(let c=0;c<=mc;c++){
+      const v=val(r,c), x=s.cells[K(r,c)], f=x && x.s && x.s.fmt;
+      let t = (typeof v==='number' && f!=='date') ? String(v) : display(v, f);
+      if(/[",\n\r]/.test(t)) t='"'+t.replace(/"/g,'""')+'"';
+      row.push(t);
+    }
+    lines.push(row.join(','));
+  }
+  download(new Blob(['\ufeff'+lines.join('\r\n')], {type:'text/csv;charset=utf-8'}), safeName(books.cur().name)+(book.sheets.length>1?'_'+safeName(s.name):'')+'.csv');
+};
+
+/* ================================================================
+   Backup / restore + startup
+   ================================================================ */
+$('#backupBtn').onclick=()=>{
+  flushDoc(); commitEdit(0,0,false); flushBook();
+  const data={app:'azh-office', version:1, date:new Date().toISOString(), docs:docs.all(), books:books.all()};
+  download(new Blob([JSON.stringify(data)], {type:'application/json'}), `azh-office-backup-${new Date().toISOString().slice(0,10)}.json`);
+};
+$('#restoreIn').onchange=async e=>{
+  const f=e.target.files[0]; e.target.value=''; if(!f) return;
+  try{
+    const d=JSON.parse(await f.text()); if(d.app!=='azh-office') throw new Error('bad');
+    flushDoc(); flushBook(); let n=0;
+    (d.docs||[]).forEach(x=>{ if(typeof x.data==='string'){ docs.create(x.name+' (restored)', x.data); n++; } });
+    (d.books||[]).forEach(x=>{ if(x.data && Array.isArray(x.data.sheets)){ books.create(x.name+' (restored)', x.data); n++; } });
+    loadDoc(); loadBook(); toast(`Restored ${n} file${n===1?'':'s'}`);
+  }catch(err){ toast('That is not a valid AZH Office backup'); }
+};
+
+function flushAll(){ flushDoc(); commitEdit(0,0,false); flushBook(); }
+window.addEventListener('beforeunload', flushAll);
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') flushAll(); });
+
+loadDoc();
+loadBook();
+showApp(store.get('azh.app', 'doc')==='sheet' ? 'sheet' : 'doc');
+</script>
+</body>
+</html>
